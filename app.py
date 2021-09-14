@@ -920,9 +920,13 @@ def enviarEscuelaAlAlgoritmo(id):
     except Exception as e:
         return f"An Error Occured: {e}"
 
+
+def main():
+    app.run(threaded=True, host='0.0.0.0', port=port)
+    
 port = int(os.environ.get('PORT', 3304))
 if __name__ == '__main__':
-    app.run(threaded=True, host='0.0.0.0', port=port)
+    main()
 
 #fijarse cuando se sube algo
 #importar algoritmo
