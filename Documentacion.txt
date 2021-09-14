@@ -2,5 +2,4 @@ source API2ENV/bin/activate  para entrar al entorno virtual
 
 pip install firebase-admin plotly flask flask_restful flask_sqlalchemy flask_migrate flask_marshmallow marshmallow-sqlalchemy
  
-
 flask run 
