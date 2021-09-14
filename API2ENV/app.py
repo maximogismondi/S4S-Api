@@ -731,8 +731,10 @@ def hello_world():
     return "a"
 
 
-@app.route('/ayudaestonoesunmeme')
+@app.route('/ayuda', methods=['POST'])
 def a():
+
+    idColegio = request.form.get('id')
     def math_fun():
         # The sleep here is simply to make it clear that this happens in the background
         sleep(1)
@@ -748,7 +750,7 @@ def a():
         print("Ejecutado prro")
 
     fun()
-    return "Running"
+    return "id"
 
 @app.route('/algoritmo')
 def runAlgorithm():
