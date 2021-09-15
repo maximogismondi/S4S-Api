@@ -734,11 +734,13 @@ def hello_world():
 @app.route('/ayuda', methods=['POST'])
 def a():
 
+    hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     idColegio = request.form.get('id')
+
     def math_fun():
         # The sleep here is simply to make it clear that this happens in the background
         sleep(1)
-        runAlgorithm()
+        runAlgorithm(hora)
 
 
     def fun():
@@ -750,10 +752,12 @@ def a():
         print("Ejecutado prro")
 
     fun()
-    return "id"
+    return hora
 
 @app.route('/algoritmo')
-def runAlgorithm():
+def runAlgorithm(hora = "lolazo"):
+
+    print(hora)
     aulas = []
     profesores = []
     dias = ["lunes", "martes", "miercoles", "jueves", "viernes"]
@@ -847,8 +851,6 @@ def runAlgorithm():
                 horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre] = {}
                 for modulo in range(turnos[turno].cantModulos):
                     horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horariosAulas[curso][dia][turno][modulo]
-    
-    hora = str(datetime.now())
     
     diccionario2 = {"horarios":horariosDiccionario, "materiasProfesores":materiasProfesores, "horariosAulas":horariosAulasDiccionario}
     escribir(diccionario2, hora)
