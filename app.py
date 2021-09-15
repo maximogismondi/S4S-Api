@@ -755,7 +755,7 @@ def a():
     return hora
 
 @app.route('/algoritmo')
-def runAlgorithm(hora = "lolazo"):
+def runAlgorithm(hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")):
 
     print(hora)
     aulas = []
