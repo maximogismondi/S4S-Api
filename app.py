@@ -733,14 +733,11 @@ def hello_world():
 
 @app.route('/ayuda', methods=['POST'])
 def a():
-
-    hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     idColegio = request.form.get('id')
-
     def math_fun():
         # The sleep here is simply to make it clear that this happens in the background
-        sleep(1)
-        runAlgorithm(hora)
+        sleep(1) 
+        runAlgorithm(idColegio)
 
 
     def fun():
@@ -748,22 +745,29 @@ def a():
         t = threading.Thread(target=math_fun)
         t.setDaemon(False)
         t.start()
-
         print("Ejecutado prro")
 
     fun()
-    return hora
+    return idColegio
 
 @app.route('/algoritmo')
-def runAlgorithm(hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")):
+def runAlgorithm(id):
+    doc_ref = db.collection(u'schools').document(u'GW65H4I8kzGFyGaFcZVKFK0XOGPZQYaLICl4d1BkM8lVawAhLDpaiOHYcoYYGT')
 
-    print(hora)
+    #docDiccionario es un diccionario de la escuela
+    doc = doc_ref.get()
+    docDiccionario = doc.to_dict()
+
     aulas = []
     profesores = []
     dias = ["lunes", "martes", "miercoles", "jueves", "viernes"]
-    cursos = ["6C","5C","1A"]
+    cursos = []
     turnos = [Turno("manana", 6), Turno("tarde", 6)]
 
+    #Cursos 
+    for i in docDiccionario["cursos"].keys():
+        cursos.append(docDiccionario['cursos'].get(i).get("nombre"))
+    print(cursos)
     #6C
     materias = [Materia("Programacion", "6C", ["Fedi"], ["laboratorio"], 6, 6, "red"),
                 Materia("Ciencia y Tecnologia", "6C", ["Carbonella"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "green"),
@@ -852,6 +856,8 @@ def runAlgorithm(hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")):
                 for modulo in range(turnos[turno].cantModulos):
                     horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horariosAulas[curso][dia][turno][modulo]
     
+    hora = str(datetime.now())
+    
     diccionario2 = {"horarios":horariosDiccionario, "materiasProfesores":materiasProfesores, "horariosAulas":horariosAulasDiccionario}
     escribir(diccionario2, hora)
     return hora
@@ -910,10 +916,6 @@ def enviarEscuelaAlAlgoritmo(id):
             profesoresM.append(docDiccionario["materias"].get(i).get("profesoresCapacitados").get(j))
         a = Materia(nombreM,cursoM, profesoresM,cantidadModulosTotalM, cantModulosPorDiaM)
         materias.append(a)  
-    #Aca hay que hacer muchos cambios, principalmente hacer que profesores, cursos y materias sean un loop para que agarren todos
-    #los datos del diccionario, also the biggest changes tienen que ser en la forma que guardamos los datos en la base de datos ya
-    #que difiere mucho de la manera que los guardamos actualmente.
-        print("alemania")
         #main(cursos,turnos,materias,dias,profesores)
     try:
         id = request.json['id']
@@ -922,13 +924,9 @@ def enviarEscuelaAlAlgoritmo(id):
     except Exception as e:
         return f"An Error Occured: {e}"
 
-
-def main():
-    app.run(threaded=True, host='0.0.0.0', port=port)
-    
 port = int(os.environ.get('PORT', 3304))
 if __name__ == '__main__':
-    main()
+    app.run(threaded=True, host='0.0.0.0', port=port)
 
 #fijarse cuando se sube algo
 #importar algoritmo
