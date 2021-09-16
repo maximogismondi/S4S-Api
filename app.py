@@ -10,6 +10,7 @@ todo_ref = db.collection('todos')
 
 from flask_cors import CORS, cross_origin
 from flask import Flask
+import gunicorn
 import copy, random, time
 import copy, operator
 import plotly.graph_objects as go
@@ -720,16 +721,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
 
 @app.route('/')
 def hello_world():
-    try:
-        # Note: Use of CollectionRef stream() is prefered to get()
-        docs = db.collection(u'schools').where(u'ejecutado', u'==', "no").stream()
-
-        for doc in docs:
-            print(f'{doc.id} => {doc.to_dict()}')
-            enviarEscuelaAlAlgoritmo(doc.id)
-    except:
-        print("An exception occurred in your pp") 
-
     return "a"
 
 
@@ -762,16 +753,17 @@ def runAlgorithm(id = "GW65H4I8kzGFyGaFcZVKFK0XOGPZQYaLICl4d1BkM8lVawAhLDpaiOHYc
     else:
         print(u'No such document!')
     docDiccionario = doc.to_dict()
+    print(docDiccionario)
 
     aulas = []
     profesores = []
     dias = ["lunes", "martes", "miercoles", "jueves", "viernes"]
     cursos = []
     turnos = [Turno("manana", 6), Turno("tarde", 6)]
-
+    
     #Cursos
-    for i in docDiccionario["cursos"].keys():
-        print(docDiccionario['cursos'].get(i).get("nombre"))
+    for i in docDiccionario["cursos"]:
+        next(item for item in dicts if item["name"] == "Pam")
         cursos.append(docDiccionario['cursos'].get(i).get("nombre"))
     #6C
     materias = [Materia("Programacion", "6C", ["Fedi"], ["laboratorio"], 6, 6, "red"),
