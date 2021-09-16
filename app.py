@@ -8,6 +8,7 @@ default_app = initialize_app(cred)
 db = firestore.client()
 todo_ref = db.collection('todos')
 
+from flask_cors import CORS, cross_origin
 from flask import Flask
 import copy, random, time
 import copy, operator
@@ -39,6 +40,7 @@ class Posicion():
         self.modulo = modulo
 
 app = Flask("appUWU")
+CORS(app)
 
 def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
 
@@ -751,11 +753,14 @@ def a():
     return idColegio
 
 @app.route('/algoritmo')
-def runAlgorithm(id):
-    doc_ref = db.collection(u'schools').document(u'GW65H4I8kzGFyGaFcZVKFK0XOGPZQYaLICl4d1BkM8lVawAhLDpaiOHYcoYYGT')
-
-    #docDiccionario es un diccionario de la escuela
+def runAlgorithm(id = "GW65H4I8kzGFyGaFcZVKFK0XOGPZQYaLICl4d1BkM8lVawAhLDpaiOHYcoYYGT"):
+    print(id)
+    doc_ref = db.collection(u'schools').document(u'1npu3kzULiePdLpoci6E7ZblSPNeGIMphKrpXHpAooLf1Vix0kUme9rQUk4BFP')
     doc = doc_ref.get()
+    if doc.exists:
+        print(f'Document data:')
+    else:
+        print(u'No such document!')
     docDiccionario = doc.to_dict()
 
     aulas = []
@@ -764,10 +769,10 @@ def runAlgorithm(id):
     cursos = []
     turnos = [Turno("manana", 6), Turno("tarde", 6)]
 
-    #Cursos 
+    #Cursos
     for i in docDiccionario["cursos"].keys():
+        print(docDiccionario['cursos'].get(i).get("nombre"))
         cursos.append(docDiccionario['cursos'].get(i).get("nombre"))
-    print(cursos)
     #6C
     materias = [Materia("Programacion", "6C", ["Fedi"], ["laboratorio"], 6, 6, "red"),
                 Materia("Ciencia y Tecnologia", "6C", ["Carbonella"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "green"),
