@@ -44,7 +44,6 @@ app = Flask("appUWU")
 CORS(app)
 
 def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
-
     #Funcion que revisa si en determinado modulo, el aula esta disponible
     def aulaDisponible(aula, horarioVerificar, dia, turno, modulo, cursoExcepcion):
         for curso in cursos:
@@ -383,8 +382,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
     #Hay q cambiar el numero por, hasta q se arregle
     iteraciones = 100
 
-    from os import system
-
     while iteraciones > 0:
         horarios = swap(horarios)
         # system("clear")
@@ -411,8 +408,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
         else:
             iteraciones = 0
         iteraciones -= 1
-        print (iteraciones)
-
+ 
     #devuelve las posibles posiciones donde se puede poner una materia para que este cerca de otra
     def checkearPosicionValidaMinimos(horarios, materia):
         posiblesPosiciones = []
@@ -471,12 +467,17 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
 
     #     return posiblesPosiciones
     # print(buscarTurnosVacios(horarios, 2))
-                            
+
+    return horarios, materiasProfesores, horariosAulas
+                   
     boolAgrupador = True
+    print("b")
     interacion = 0
     while boolAgrupador:
         interacion = interacion + 1
         horariosPrueba = copy.deepcopy(horarios)
+        print("a")
+
         for curso in range(len(cursos)):
             for dia in range(len(dias)): 
                 for turno in range(len(turnos)):
@@ -551,8 +552,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
                                     #                         desplazado = True
                                     #                 else:
                                     #                         horariosPrueba = copy.deepcopy(horarios)
-                                        
-    
+                                    
         casillerosLibres = True
         for curso in range(len(cursos)):
             for dia in range(len(dias)): 
@@ -572,6 +572,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
                             casillerosLibres = False
         if casillerosLibres or interacion == 100:
             boolAgrupador = False
+    
 
     def checkearPosicionValidaMinimosAulas(horarios, aula):
         posiblesPosiciones = []
@@ -782,7 +783,7 @@ def runAlgorithm(uid = "jejeboi", hora = "algo fallo"):
         cantidadMaximaDeModulosPorDiaM = i.get("cantidadMaximaDeModulosPorDia")
         a = Materia(nombreM, cursoM, posiblesProfesoresM, aulas, cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM, "red")
         materias.append(a)
-    for curso in cursos:
+    for curso in reversed(cursos):
         materias.append(Materia("Hueco",curso, [], [], 0, 99, "white"))
     print("owo")
 
@@ -793,6 +794,7 @@ def runAlgorithm(uid = "jejeboi", hora = "algo fallo"):
         print("An exception occurred in your pp") 
     
     horariosDiccionario = {}
+    print(horarios)
     for curso in range(len(cursos)):
         horariosDiccionario[cursos[curso]] = {}
         for dia in range(len(dias)):
@@ -800,6 +802,7 @@ def runAlgorithm(uid = "jejeboi", hora = "algo fallo"):
             for turno in range(len(turnos)):
                 horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre] = {}
                 for modulo in range(turnos[turno].cantModulos):
+                    print(horarios[curso][dia][turno][modulo].nombre)
                     horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horarios[curso][dia][turno][modulo].nombre
     
     horariosAulasDiccionario = {}
