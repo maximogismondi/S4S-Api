@@ -813,7 +813,7 @@ def runAlgorithm(uid = "jejeboi", hora = "algo fallo"):
                     horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horariosAulas[curso][dia][turno][modulo]
     
     diccionario2 = {"horarios":horariosDiccionario, "materiasProfesores":materiasProfesores, "horariosAulas":horariosAulasDiccionario}
-    escribir(diccionario2, hora)
+    escribir(diccionario2, hora, uid)
     return hora
 
 def idGenerator():
@@ -821,11 +821,15 @@ def idGenerator():
     doc_ref = db.collection(u'school').document()
     return doc_ref.id
 
-def escribir(my_data, hora):
+def escribir(my_data, hora, uid):
     data = {hora:my_data}
-    doc_ref = db.collection(u'horariosHechos').document()
-    doc_ref.set(data)
-    print(data)
+    doc_ref = db.collection(u'horariosHechos').document(uid)
+    doc = doc_ref.get()
+    if doc.exists:
+        doc_ref = db.collection(u'horariosHechos').document(uid).update(data)
+    else:
+        doc_ref = db.collection(u'horariosHechos').document(uid).set(data)
+    
     try:
         id = idGenerator()
         todo_ref.document(id).set(request.json)
