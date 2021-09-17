@@ -744,120 +744,127 @@ def a():
     return idColegio
 
 @app.route('/algoritmo')
-def runAlgorithm(id = "GW65H4I8kzGFyGaFcZVKFK0XOGPZQYaLICl4d1BkM8lVawAhLDpaiOHYcoYYGT"):
+def runAlgorithm(id = "hTbz9pWNNHSlif1LAvpVRxEwM6zCF1Npws8Mm58SH0uIdV1cagrwMkwZCokQvV"):
     print(id)
-    doc_ref = db.collection(u'schools').document(u'1npu3kzULiePdLpoci6E7ZblSPNeGIMphKrpXHpAooLf1Vix0kUme9rQUk4BFP')
+    doc_ref = db.collection(u'schools').document(u'hTbz9pWNNHSlif1LAvpVRxEwM6zCF1Npws8Mm58SH0uIdV1cagrwMkwZCokQvV')
     doc = doc_ref.get()
     if doc.exists:
         print(f'Document data:')
     else:
-        print(u'No such document!')
+        return(u'No such document!')
+
+    #docDiccionario es un diccionario de la escuela
     docDiccionario = doc.to_dict()
     print(docDiccionario)
-
     aulas = []
     profesores = []
     dias = ["lunes", "martes", "miercoles", "jueves", "viernes"]
     cursos = []
     turnos = [Turno("manana", 6), Turno("tarde", 6)]
+
+    [cursos.append(i.get("nombre")) for i in docDiccionario["cursos"]]
+    [aulas.append(i.get("nombre")) for i in docDiccionario["aulas"]]
+    [aulas.append(i.get("nombre")) for i in docDiccionario["profesores"]]
+    for i in docDiccionario["turnos"]:
+        nombreT = str(i.get("turno"))
+        cantidadModulosT = len(i.get("modulos"))
+        t = Turno(nombreT, cantidadModulosT)
+        turnos.append(t)
     
-    #Cursos
-    for i in docDiccionario["cursos"]:
-        next(item for item in dicts if item["name"] == "Pam")
-        cursos.append(docDiccionario['cursos'].get(i).get("nombre"))
+
     #6C
-    materias = [Materia("Programacion", "6C", ["Fedi"], ["laboratorio"], 6, 6, "red"),
-                Materia("Ciencia y Tecnologia", "6C", ["Carbonella"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "green"),
-                Materia("Matematica", "6C", ["Vittorangeli"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 4, 2, "blue"),
-                Materia("Gestion", "6C", ["Liloia"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 4, 2, "white"),
-                Materia("Desarrollo de Sist.", "6C", ["Saclier"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 6, 6, "lightgreen"),
-                Materia("Practicas", "6C", ["Pruscino"], ["laboratorio", "computacion"], 9, 6, "grey"),
-                Materia("Ed. Fisica H", "6C", ["Soto"], ["campo"], 3, 3, "yellow"),
-                Materia("Ed. Fisica M", "6C", ["Solari"], ["campo"], 3, 3, "pink"),
-                Materia("Electricidad", "6C", ["De Bernardi"],  ["tallerVaca"], 2, 2, "lightblue"),
-                Materia("T. de Sop. Inf", "6C", ["Matias Colque"], ["laboratorio"], 3, 3, "darkorange"),
-                Materia("Ingles", "6C", ["Castillo"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 3, "orange"),
-                Materia("Redes", "6C", ["Pruscino"], ["aula1", "laboratorio"], 7, 4, "purple"),
-                Materia("Ciudadania", "6C", ["Vilches"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "lightgrey"),
-                Materia("Tutoria", "6C", ["Carbonella"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 1, 1, "black")]
-
-    #5C
-    materias += [Materia("Analisis de Sistemas", "5C", ["Liloia"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 4, 2, "red"), 
-                Materia("Labratorio", "5C", ["Matias Colque"], ["laboratorio"], 9, 6, "blue"),
-                Materia("Educacion Fisica H", "5C", ["Soto"], ["campo"], 3, 3, "yellow"),
-                Materia("Educacion Fisica M", "5C", ["Solari"], ["campo"], 3, 3, "pink"),
-                Materia("Economia", "5C", ["Vittorangeli"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 3, "orange"),
-                Materia("Redes", "5C", ["Torres"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 7, 4, "green"),
-                Materia("Literatura", "5C", ["Peccorino"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "lightgreen"),
-                Materia("T. innov. tecno.", "5C", ["De Bernardi"], ["tallerVaca"], 2, 2, "purple"),
-                Materia("Ingles", "5C", ["Castillo"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 3, "turquoise"),
-                Materia("Matematica", "5C", ["Fiore"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 3, "aqua"),
-                Materia("Base de Datos", "5C", ["Piñeyro"], ["laboratorio"], 6, 6, "aquamarine"),
-                Materia("T de sop inf", "5C", ["Matias Colque"], ["laboratorio"], 2, 2, "grey"),
-                ]
-
-    #1A
-    materias +=[Materia("Matematica", "1A", ["Perez"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 6, 2, "red"),
-                Materia("Lengua y literatura", "1A", ["Lopez"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 4, 2, "green"),
-                Materia("Educacion ciudadana", "1A", ["Lopez"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "blue"),
-                Materia("Tecnologia de representacion", "1A", ["Barrionuevo"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 4, 2, "white"),
-                Materia("Historia.", "1A", ["Vilches"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 2, "lightgreen"),
-                Materia("Taller", "1A", ["Nievas"], ["taller"], 12, 6, "grey"),
-                Materia("Geografia", "1A", ["Bach"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 5, 3, "yellow"),
-                Materia("Computacion", "1A", ["Derre"], ["laboratorio"], 2, 2, "yellow"),           
-                Materia("Educacion artistica zzzz", "1A", ["Vilches"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "orange"),
-                Materia("Biologia", "1A", ["Moyano"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "purple"),
-                Materia("tutoria", "1A", ["Derre"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 1, 1, "lightgrey"),
-                Materia("Ingles", "1A", ["Castillo"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 3, "black"),
-                Materia("Ed. Fisica H", "1A", ["Soto"], ["campo"], 3, 3, "yellow"),
-                Materia("Ed. Fisica M", "1A", ["Solari"], ["campo"], 3, 3, "pink")]
-
-    materias += [Materia("Hueco", "1A", [], [], 0, 12, "white"),
-                 Materia("Hueco", "5C", [], [], 0, 12, "white"),
-                 Materia("Hueco", "6C", [], [], 0, 12, "white")]
-
-    for materia in materias:
-        for profe in materia.posibleProfesores:
-            if profe not in profesores:
-                profesores.append(profe)
-        
-        for aula in materia.posiblesAulas:
-            if aula not in aulas:
-                aulas.append(aula)
-
-    profesores.append("Hueco")
-    aulas.append("Hueco")
-
-    try:
-        horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias)
-    except:
-        print("An exception occurred in your pp") 
-    
-    horariosDiccionario = {}
-    for curso in range(len(cursos)):
-        horariosDiccionario[cursos[curso]] = {}
-        for dia in range(len(dias)):
-            horariosDiccionario[cursos[curso]][dias[dia]] = {}
-            for turno in range(len(turnos)):
-                horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre] = {}
-                for modulo in range(turnos[turno].cantModulos):
-                    horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horarios[curso][dia][turno][modulo].nombre
-    
-    horariosAulasDiccionario = {}
-    for curso in range(len(cursos)):
-        horariosAulasDiccionario[cursos[curso]] = {}
-        for dia in range(len(dias)):
-            horariosAulasDiccionario[cursos[curso]][dias[dia]] = {}
-            for turno in range(len(turnos)):
-                horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre] = {}
-                for modulo in range(turnos[turno].cantModulos):
-                    horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horariosAulas[curso][dia][turno][modulo]
-    
-    hora = str(datetime.now())
-    
-    diccionario2 = {"horarios":horariosDiccionario, "materiasProfesores":materiasProfesores, "horariosAulas":horariosAulasDiccionario}
-    escribir(diccionario2, hora)
-    return hora
+    #materias = [Materia("Programacion", "6C", ["Fedi"], ["laboratorio"], 6, 6, "red"),
+    #            Materia("Ciencia y Tecnologia", "6C", ["Carbonella"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "green"),
+    #            Materia("Matematica", "6C", ["Vittorangeli"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 4, 2, "blue"),
+    #            Materia("Gestion", "6C", ["Liloia"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 4, 2, "white"),
+    #            Materia("Desarrollo de Sist.", "6C", ["Saclier"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 6, 6, "lightgreen"),
+    #            Materia("Practicas", "6C", ["Pruscino"], ["laboratorio", "computacion"], 9, 6, "grey"),
+    #            Materia("Ed. Fisica H", "6C", ["Soto"], ["campo"], 3, 3, "yellow"),
+    #            Materia("Ed. Fisica M", "6C", ["Solari"], ["campo"], 3, 3, "pink"),
+    #            Materia("Electricidad", "6C", ["De Bernardi"],  ["tallerVaca"], 2, 2, "lightblue"),
+    #            Materia("T. de Sop. Inf", "6C", ["Matias Colque"], ["laboratorio"], 3, 3, "darkorange"),
+    #            Materia("Ingles", "6C", ["Castillo"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 3, "orange"),
+    #            Materia("Redes", "6C", ["Pruscino"], ["aula1", "laboratorio"], 7, 4, "purple"),
+    #            Materia("Ciudadania", "6C", ["Vilches"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "lightgrey"),
+    #            Materia("Tutoria", "6C", ["Carbonella"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 1, 1, "black")]
+#
+    ##5C
+    #materias += [Materia("Analisis de Sistemas", "5C", ["Liloia"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 4, 2, "red"), 
+    #            Materia("Labratorio", "5C", ["Matias Colque"], ["laboratorio"], 9, 6, "blue"),
+    #            Materia("Educacion Fisica H", "5C", ["Soto"], ["campo"], 3, 3, "yellow"),
+    #            Materia("Educacion Fisica M", "5C", ["Solari"], ["campo"], 3, 3, "pink"),
+    #            Materia("Economia", "5C", ["Vittorangeli"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 3, "orange"),
+    #            Materia("Redes", "5C", ["Torres"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 7, 4, "green"),
+    #            Materia("Literatura", "5C", ["Peccorino"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "lightgreen"),
+    #            Materia("T. innov. tecno.", "5C", ["De Bernardi"], ["tallerVaca"], 2, 2, "purple"),
+    #            Materia("Ingles", "5C", ["Castillo"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 3, "turquoise"),
+    #            Materia("Matematica", "5C", ["Fiore"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 3, "aqua"),
+    #            Materia("Base de Datos", "5C", ["Piñeyro"], ["laboratorio"], 6, 6, "aquamarine"),
+    #            Materia("T de sop inf", "5C", ["Matias Colque"], ["laboratorio"], 2, 2, "grey"),
+    #            ]
+#
+    ##1A
+    #materias +=[Materia("Matematica", "1A", ["Perez"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 6, 2, "red"),
+    #            Materia("Lengua y literatura", "1A", ["Lopez"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 4, 2, "green"),
+    #            Materia("Educacion ciudadana", "1A", ["Lopez"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "blue"),
+    #            Materia("Tecnologia de representacion", "1A", ["Barrionuevo"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 4, 2, "white"),
+    #            Materia("Historia.", "1A", ["Vilches"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 2, "lightgreen"),
+    #            Materia("Taller", "1A", ["Nievas"], ["taller"], 12, 6, "grey"),
+    #            Materia("Geografia", "1A", ["Bach"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 5, 3, "yellow"),
+    #            Materia("Computacion", "1A", ["Derre"], ["laboratorio"], 2, 2, "yellow"),           
+    #            Materia("Educacion artistica zzzz", "1A", ["Vilches"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "orange"),
+    #            Materia("Biologia", "1A", ["Moyano"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 2, 2, "purple"),
+    #            Materia("tutoria", "1A", ["Derre"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 1, 1, "lightgrey"),
+    #            Materia("Ingles", "1A", ["Castillo"], ["aula1","aula2","aula3","aula4","aula5","aula6","aula7","aula8","aula9"], 3, 3, "black"),
+    #            Materia("Ed. Fisica H", "1A", ["Soto"], ["campo"], 3, 3, "yellow"),
+    #            Materia("Ed. Fisica M", "1A", ["Solari"], ["campo"], 3, 3, "pink")]
+#
+    #materias += [Materia("Hueco", "1A", [], [], 0, 12, "white"),
+    #             Materia("Hueco", "5C", [], [], 0, 12, "white"),
+    #             Materia("Hueco", "6C", [], [], 0, 12, "white")]
+#
+    #for materia in materias:
+    #    for profe in materia.posibleProfesores:
+    #        if profe not in profesores:
+    #            profesores.append(profe)
+    #    
+    #    for aula in materia.posiblesAulas:
+    #        if aula not in aulas:
+    #            aulas.append(aula)
+#
+    #profesores.append("Hueco")
+    #aulas.append("Hueco")
+#
+    #try:
+    #    horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias)
+    #except:
+    #    print("An exception occurred in your pp") 
+    #
+    #horariosDiccionario = {}
+    #for curso in range(len(cursos)):
+    #    horariosDiccionario[cursos[curso]] = {}
+    #    for dia in range(len(dias)):
+    #        horariosDiccionario[cursos[curso]][dias[dia]] = {}
+    #        for turno in range(len(turnos)):
+    #            horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre] = {}
+    #            for modulo in range(turnos[turno].cantModulos):
+    #                horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horarios[curso][dia][turno][modulo].nombre
+    #
+    #horariosAulasDiccionario = {}
+    #for curso in range(len(cursos)):
+    #    horariosAulasDiccionario[cursos[curso]] = {}
+    #    for dia in range(len(dias)):
+    #        horariosAulasDiccionario[cursos[curso]][dias[dia]] = {}
+    #        for turno in range(len(turnos)):
+    #            horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre] = {}
+    #            for modulo in range(turnos[turno].cantModulos):
+    #                horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horariosAulas[curso][dia][turno][modulo]
+    #
+    #hora = str(datetime.now())
+    #
+    #diccionario2 = {"horarios":horariosDiccionario, "materiasProfesores":materiasProfesores, "horariosAulas":horariosAulasDiccionario}
+    #escribir(diccionario2, hora)
+    return "hora"
 
 def idGenerator():
 
