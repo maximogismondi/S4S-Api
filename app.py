@@ -723,13 +723,14 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
 def hello_world():
     return "a"
 
-@app.route('/ayuda', methods=['POST'])
-def a():
-    idColegio = request.form.get('id')
+@app.route('/algoritmo', methods=['GET'])
+def llamadaAlgorimo():
+    uidColegio = request.args.get('uid')
+    hora = str(datetime.now())
     def math_fun():
         # The sleep here is simply to make it clear that this happens in the background
         sleep(1) 
-        runAlgorithm(idColegio)
+        runAlgorithm(uidColegio, hora)
 
 
     def fun():
@@ -740,16 +741,16 @@ def a():
         print("Ejecutado prro")
 
     fun()
-    return idColegio
+    return hora
 
-@app.route('/algoritmo')
-def runAlgorithm(id = "hTbz9pWNNHSlif1LAvpVRxEwM6zCF1Npws8Mm58SH0uIdV1cagrwMkwZCokQvV"):
-    print(id)
-    doc_ref = db.collection(u'schools').document(u'hTbz9pWNNHSlif1LAvpVRxEwM6zCF1Npws8Mm58SH0uIdV1cagrwMkwZCokQvV')
+def runAlgorithm(uid = "jejeboi", hora = "algo fallo"):
+    print(uid)
+    doc_ref = db.collection(u'schools').document(uid)
     doc = doc_ref.get()
     if doc.exists:
         print(f'Document data:')
     else:
+        print("uwu")
         return(u'No such document!')
 
     #docDiccionario es un diccionario de la escuela
@@ -761,6 +762,7 @@ def runAlgorithm(id = "hTbz9pWNNHSlif1LAvpVRxEwM6zCF1Npws8Mm58SH0uIdV1cagrwMkwZC
     cursos = []
     turnos = []
     materias = []
+    horarios = []
 
     [cursos.append(i.get("nombre")) for i in docDiccionario["cursos"]]
     [aulas.append(i.get("nombre")) for i in docDiccionario["aulas"]]
@@ -775,14 +777,17 @@ def runAlgorithm(id = "hTbz9pWNNHSlif1LAvpVRxEwM6zCF1Npws8Mm58SH0uIdV1cagrwMkwZC
         cursoM = i.get("curso")
         posiblesProfesoresM = []
         for j in i.get("profesoresCapacitados"):
-            if j == True:
-                print("a")
+            posiblesProfesoresM.append(j)
         cantidadDeModulosTotalM = i.get("cantidadDeModulosTotal")
         cantidadMaximaDeModulosPorDiaM = i.get("cantidadMaximaDeModulosPorDia")
         a = Materia(nombreM, cursoM, posiblesProfesoresM, aulas, cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM, "red")
         materias.append(a)
+    for curso in cursos:
+        materias.append(Materia("Hueco",curso, [], [], 0, 99, "white"))
+    print("owo")
 
     try:
+        print("A")
         horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias)
     except:
         print("An exception occurred in your pp") 
@@ -806,8 +811,6 @@ def runAlgorithm(id = "hTbz9pWNNHSlif1LAvpVRxEwM6zCF1Npws8Mm58SH0uIdV1cagrwMkwZC
                 horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre] = {}
                 for modulo in range(turnos[turno].cantModulos):
                     horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horariosAulas[curso][dia][turno][modulo]
-    
-    hora = str(datetime.now())
     
     diccionario2 = {"horarios":horariosDiccionario, "materiasProfesores":materiasProfesores, "horariosAulas":horariosAulasDiccionario}
     escribir(diccionario2, hora)
