@@ -892,7 +892,6 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
 
     #docDiccionario es un diccionario de la escuela
     docDiccionario = doc.to_dict()
-    print(docDiccionario)
     aulas = []
     profesores = []
     dias = ["lunes", "martes", "miercoles", "jueves", "viernes"]
@@ -913,8 +912,8 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
         nombreM = i.get("nombre")
         cursoM = i.get("curso")
         posiblesProfesoresM = []
+        print(i.get("profesoresCapacitados"))
         for j in i.get("profesoresCapacitados"):
-            print(j)
             if (j.value):
                 posiblesProfesoresM.append(j)
         posiblesAulasM = []
@@ -927,16 +926,13 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
         materias.append(a)
     for curso in cursos:
         materias.append(Materia("Hueco",curso, [], [], 0, 99, "white"))
-    print("owo")
 
     try:
-        print("A")
         horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias)
     except:
         print("An exception occurred in your pp") 
     
     horariosDiccionario = {}
-    print(horarios)
     for curso in range(len(cursos)):
         horariosDiccionario[cursos[curso]] = {}
         for dia in range(len(dias)):
@@ -944,7 +940,6 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
             for turno in range(len(turnos)):
                 horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre] = {}
                 for modulo in range(turnos[turno].cantModulos):
-                    print(horarios[curso][dia][turno][modulo].nombre)
                     horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horarios[curso][dia][turno][modulo].nombre
     
     horariosAulasDiccionario = {}
@@ -961,7 +956,6 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
     escribir(diccionario2, hora, idColegio)
 
 def idGenerator():
-
     doc_ref = db.collection(u'school').document()
     return doc_ref.id
 
