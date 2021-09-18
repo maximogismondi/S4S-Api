@@ -902,7 +902,7 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
 
     [cursos.append(i.get("nombre")) for i in docDiccionario["cursos"]]
     [aulas.append(i.get("nombre")) for i in docDiccionario["aulas"]]
-    [profesores.append(i.get("nombre")) for i in docDiccionario["profesores"]]
+    [profesores.append(i.get("nombre") + " " + i.get("apellido")) for i in docDiccionario["profesores"]]
     for i in docDiccionario["turnos"]:
         nombreT = str(i.get("turno"))
         cantidadModulosT = len(i.get("modulos"))
