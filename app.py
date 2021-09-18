@@ -536,7 +536,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
         else:
             iteraciones = 0
         iteraciones -= 1
-        print (iteraciones)
 
 
 
@@ -958,12 +957,7 @@ def idGenerator():
     return doc_ref.id
 
 def escribir(my_data, hora, idColegio):
-    data = {}
-    data[hora] = {}
-    data[hora]["horarios"] = my_data["horarios"]
-    data[hora]["materiasProfesores"] = my_data["materiasProfesores"]
-    data[hora]["horariosAulas"] = my_data["horariosAulas"]
-
+    data = {hora: my_data}
     doc_ref = db.collection(u'horariosHechos').document(idColegio)
     doc = doc_ref.get()
     if doc.exists:
