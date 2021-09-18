@@ -958,13 +958,18 @@ def idGenerator():
     return doc_ref.id
 
 def escribir(my_data, hora, idColegio):
-    data = {hora:my_data}
+    data = {}
+    data[hora] = {}
+    data[hora]["horarios"] = my_data["horarios"]
+    data[hora]["materiasProfesores"] = my_data["materiasProfesores"]
+    data[hora]["horariosAulas"] = my_data["horariosAulas"]
+
     doc_ref = db.collection(u'horariosHechos').document(idColegio)
     doc = doc_ref.get()
     if doc.exists:
-        doc_ref = db.collection(u'horariosHechos').document(idColegio).update(hora: my_data)
+        doc_ref = db.collection(u'horariosHechos').document(idColegio).update(data)
     else:
-        doc_ref = db.collection(u'horariosHechos').document(idColegio).set(hora: my_data)
+        doc_ref = db.collection(u'horariosHechos').document(idColegio).set(data)
     
     try:
         id = idGenerator()
