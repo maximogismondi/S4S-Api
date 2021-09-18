@@ -912,14 +912,13 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
         nombreM = i.get("nombre")
         cursoM = i.get("curso")
         posiblesProfesoresM = []
-        print(i.get("profesoresCapacitados"))
-        for j in i.get("profesoresCapacitados"):
-            if (j.value):
-                posiblesProfesoresM.append(j)
+        for profesor in profesores:
+            if (i.get("profesoresCapacitados")[profesor]):
+                posiblesProfesoresM.append(i.get("profesoresCapacitados")[profesor])
         posiblesAulasM = []
-        for j in i.get("aulasMateria"):
-            if (j.value):
-                posiblesAulasM.append(j)
+        for aula in aulas:
+            if (i.get("aulasMateria")[aula]):
+                posiblesAulasM.append(i.get("aulasMateria")[aula])
         cantidadDeModulosTotalM = i.get("cantidadDeModulosTotal")
         cantidadMaximaDeModulosPorDiaM = i.get("cantidadMaximaDeModulosPorDia")
         a = Materia(nombreM, cursoM, posiblesProfesoresM, posiblesAulasM, cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM, "red")
