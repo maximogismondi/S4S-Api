@@ -76,7 +76,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
     def checkearPosicionValidaMinimos(horarios, materia):
         posiblesPosiciones = []
         for curso in range(len(cursos)):
-            for dia in range(5): 
+            for dia in range(len(dias)): 
                 for turno in range(len(turnos)):
                     for modulo in range(turnos[turno].cantModulos):
                         if horarios[curso][dia][turno][modulo].nombre == materia.nombre:
@@ -149,7 +149,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
     def checkearPosicionValidaMinimosAulas(horarios, aula):
         posiblesPosiciones = []
         for curso in range(len(cursos)):
-            for dia in range(5): 
+            for dia in range(len(dias)): 
                 for turno in range(len(turnos)):
                     for modulo in range(turnos[turno].cantModulos):
                         if horariosAulas[curso][dia][turno][modulo] == aula:
@@ -887,7 +887,6 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
     if doc.exists:
         print(f'Document data:')
     else:
-        print("uwu")
         return(u'No such document!')
 
     #docDiccionario es un diccionario de la escuela
@@ -951,8 +950,8 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
                 for modulo in range(turnos[turno].cantModulos):
                     horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horariosAulas[curso][dia][turno][modulo]
     
-    diccionario2 = {"horarios":horariosDiccionario, "materiasProfesores":materiasProfesores, "horariosAulas":horariosAulasDiccionario}
-    escribir(diccionario2, hora, idColegio)
+    diccionarioColegio = {"horarios":horariosDiccionario, "materiasProfesores":materiasProfesores, "horariosAulas":horariosAulasDiccionario}
+    escribir(diccionarioColegio, hora, idColegio)
 
 def idGenerator():
     doc_ref = db.collection(u'school').document()
@@ -963,57 +962,12 @@ def escribir(my_data, hora, idColegio):
     doc_ref = db.collection(u'horariosHechos').document(idColegio)
     doc = doc_ref.get()
     if doc.exists:
-        doc_ref = db.collection(u'horariosHechos').document(idColegio).update(data)
+        doc_ref = db.collection(u'horariosHechos').document(idColegio).update(hora: my_data)
     else:
-        doc_ref = db.collection(u'horariosHechos').document(idColegio).set(data)
+        doc_ref = db.collection(u'horariosHechos').document(idColegio).set(hora: my_data)
     
     try:
         id = idGenerator()
-        todo_ref.document(id).set(request.json)
-        return jsonify({"success": True}), 200
-    except Exception as e:
-        return f"An Error Occured: {e}"
-
-def enviarEscuelaAlAlgoritmo(id):
-
-    #doc_ref = db.collection(u'school').document(u'lhrtFyMTfLFawLGOtp3J')
-
-    #doc = doc_ref.get()
-    #schoolR = School.from_dict()   #hay que hacer una funcion para poder traducir lo que llega de doc a School
-    doc_ref = db.collection(u'schools').document(id)
-
-    #docDiccionario es un diccionario de la escuela
-    doc = doc_ref.get()
-    docDiccionario = doc.to_dict()
-    profesores = []
-    cursos = []
-    materias = []
-    turnos = []
-    cantModulosPorDia = docDiccionario["cantModulosPorDia"]
-    dias = ["lunes", "martes", "miercoles", "jueves", "viernes"]
-    for i in docDiccionario["profesores"].keys():
-        profesores.append(docDiccionario['profesores'].get(i))
-    for i in docDiccionario["cursos"].keys():
-        cursos.append(docDiccionario['cursos'].get(i))
-    for i in docDiccionario["turnos"].key():
-        nombreT = str(docDiccionario["turnos"].get(i).get("turno"))
-        cantidadModulosT = int(docDiccionario["materias"].get(i).get("cantModulos"))
-        t = Turno(nombreT, cantidadModulosT)
-        print(t)
-        turnos.append(t)
-    for i in docDiccionario["materias"].keys():
-        nombreM = str(docDiccionario["materias"].get(i).get("nombre"))
-        cursoM = str(docDiccionario["materias"].get(i).get("curso"))
-        cantidadModulosTotalM = docDiccionario["materias"].get(i).get("cantidadDeModulosTotal")
-        cantModulosPorDiaM = docDiccionario["materias"].get(i).get("cantidadMaximaDeModulosPorDia")
-        profesoresM = []
-        for j in docDiccionario["materias"].get(i).get("profesoresCapacitados"):
-            profesoresM.append(docDiccionario["materias"].get(i).get("profesoresCapacitados").get(j))
-        a = Materia(nombreM,cursoM, profesoresM,cantidadModulosTotalM, cantModulosPorDiaM)
-        materias.append(a)  
-        #main(cursos,turnos,materias,dias,profesores)
-    try:
-        id = request.json['id']
         todo_ref.document(id).set(request.json)
         return jsonify({"success": True}), 200
     except Exception as e:
@@ -1025,4 +979,3 @@ if __name__ == '__main__':
 
 #fijarse cuando se sube algo
 #importar algoritmo
-
