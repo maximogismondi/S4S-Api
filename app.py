@@ -835,7 +835,7 @@ def hello_world():
 @app.route('/algoritmo', methods=['GET'])
 def  hilos():
     idColegio = request.args.get('idColegio')
-    hora = str(datetime.now())
+    hora = str(datetime.fromisoformat( datetime.now().isoformat(timespec='minutes') ))
     def math_fun():
         # The sleep here is simply to make it clear that this happens in the background
         sleep(1) 
@@ -852,6 +852,7 @@ def  hilos():
     return hora
 
 def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
+    print(idColegio)
     doc_ref = db.collection(u'schools').document(idColegio)
     doc = doc_ref.get()
     if doc.exists:
@@ -896,10 +897,10 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
     for curso in cursos:
         materias.append(Materia("Hueco",curso, [], [], 0, 99, "white"))
 
-    # try:
-    horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias)
-    # except:
-    #     print("An exception occurred in your pp") 
+    try:
+        horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias)
+    except:
+        print("An exception occurred in your pp") 
     
     horariosDiccionario = {}
     for curso in range(len(cursos)):
@@ -933,8 +934,10 @@ def escribir(my_data, hora, idColegio):
     doc_ref = db.collection(u'horariosHechos').document(idColegio)
     doc = doc_ref.get()
     if doc.exists:
+        print(data)
         doc_ref = db.collection(u'horariosHechos').document(idColegio).update(data)
     else:
+        print(data)
         doc_ref = db.collection(u'horariosHechos').document(idColegio).set(data)
     
     try:
