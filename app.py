@@ -910,11 +910,11 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
         nombreM = i.get("nombre")
         cursoM = i.get("curso")
         posiblesProfesoresM = []
-        for profesor in profesores:
+        for profesor in i.get("profesoresCapacitados"):
             if (i.get("profesoresCapacitados")[profesor]):
                 posiblesProfesoresM.append(profesor)
         posiblesAulasM = []
-        for aula in aulas:
+        for aula in i.get("aulasMateria"):
             if (i.get("aulasMateria")[aula]):
                 posiblesAulasM.append(aula)
         cantidadDeModulosTotalM = i.get("cantidadDeModulosTotal")
