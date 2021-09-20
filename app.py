@@ -175,7 +175,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
                                     posiblesPosiciones.append([curso, dia, turno, modulo - 1])
         return posiblesPosiciones
 
-
     def validarModulosContinuos(horariosChequear, cursoChequear, diaChequear, turnoChequear, moduloChequear):
 
         materiaChequear = horariosChequear[cursoChequear][diaChequear][turnoChequear][moduloChequear]
@@ -223,7 +222,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
 
                 else:
                     for modulo in range(turnos[turnoChequear].cantModulos):
-                        if horariosChequear[cursoChequear][diaChequear][turno][modulo].nombre.split("-")[0] != "Hueco": 
+                        if horariosChequear[cursoChequear][diaChequear][turnoChequear][modulo].nombre.split("-")[0] != "Hueco": 
                             break
 
                     else:
@@ -412,7 +411,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
                 else:
                     continue
                 break
-
+    
     #Cambio los none por materias hueco
     for curso in range(len(cursos)):
         for dia in range(len(dias)):
@@ -426,14 +425,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
                                 break
 
         materiasProfesores[materias[len(materias)-1-curso].nombre] = profesores[-1]
-
-    for curso in range(len(cursos)):
-        for dia in range(len(dias)):
-            for turno in range(len(turnos)):
-                for modulo in range(turnos[turno].cantModulos):
-                    materia = horarios[curso][dia][turno][modulo]
-                    if materia == None:
-                        print(curso, dia, turno, modulo)
 
     #Hay que asignar un profesor a las materias que no lo tengan, pero no se puede hacer sin q se superpongan, x lo q habria q emepzar a swappear las materias del horario
     def swap(horarios):
@@ -508,10 +499,9 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
     #Hay q cambiar el numero por, hasta q se arregle
     iteraciones = 100
 
-    from os import system
-
     while iteraciones > 0:
         horarios = swap(horarios)
+
         # system("clear")
         for curso in range(len(cursos)):
             for dia in range(len(dias)):
@@ -536,9 +526,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
         else:
             iteraciones = 0
         iteraciones -= 1
-
-
-
 
     #Intento de arreglo de problemas de superposicion
     # boolAgrupador = True
@@ -599,16 +586,8 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
     #                         print(materia.nombre, horariosAulas[curso][dia][turno][modulo])
     #     if interacion == 10:
     #         boolAgrupador = False
-
-
-
-
-
-
-
-
-
     #agrupador de materias principal
+
     boolAgrupador = True
     interacion = 0
     while boolAgrupador:
@@ -710,9 +689,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
         if casillerosLibres or interacion == 100:
             boolAgrupador = False
 
-
-
-
     #Agrupador de aulas principal, utiliza el mismo metodo que el agrupador de materias
     boolAgrupador = True
     interacion = 0
@@ -771,10 +747,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
         if casillerosLibres or interacion == 100:
             boolAgrupador = False
 
-
-
-
-
     #Agrupador secundario de aulas, este intenta poner aulas adyacentes a las que ya hay
     boolAgrupador = True
     interacion = 0
@@ -789,7 +761,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
 
         if interacion == 100:
             boolAgrupador = False
-
 
     #Tercer agrupador, este intenta hacer que en un bloque tengan todos la misma aula
     boolAgrupador = True
@@ -902,10 +873,11 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
     [aulas.append(i.get("nombre")) for i in docDiccionario["aulas"]]
     [profesores.append(i.get("nombre") + " " + i.get("apellido")) for i in docDiccionario["profesores"]]
     for i in docDiccionario["turnos"]:
-        nombreT = str(i.get("turno"))
-        cantidadModulosT = len(i.get("modulos"))
-        t = Turno(nombreT, cantidadModulosT)
-        turnos.append(t)
+        if len(i.get("modulos")) > 0:
+            nombreT = str(i.get("turno"))
+            cantidadModulosT = len(i.get("modulos"))
+            t = Turno(nombreT, cantidadModulosT)
+            turnos.append(t)
     for i in docDiccionario["materias"]:
         nombreM = i.get("nombre")
         cursoM = i.get("curso")
@@ -924,10 +896,10 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
     for curso in cursos:
         materias.append(Materia("Hueco",curso, [], [], 0, 99, "white"))
 
-    try:
-        horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias)
-    except:
-        print("An exception occurred in your pp") 
+    # try:
+    horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias)
+    # except:
+    #     print("An exception occurred in your pp") 
     
     horariosDiccionario = {}
     for curso in range(len(cursos)):
