@@ -846,8 +846,6 @@ def  esAdminOnoEsAdmin():
 
 @app.route('/')
 def hello_world():
-    doc123 = db.collection(u'schools').document(u"InstitutoPolitecnicoModelo")
-    db.document(u"schools/"+"Instituto Politécnico Modelo").set(doc123.get().to_dict())
     return "a"
 
 @app.route('/algoritmo', methods=['GET'])
