@@ -878,6 +878,7 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
 
     #docDiccionario es un diccionario de la escuela
     docDiccionario = doc.to_dict()
+    print(docDiccionario)
     aulas = []
     profesores = []
     dias = ["lunes", "martes", "miercoles", "jueves", "viernes"]
@@ -946,15 +947,8 @@ def idGenerator():
     return doc_ref.id
 
 def escribir(my_data, hora, idColegio):
-    data = {hora: my_data}
-    doc_ref = db.collection(u'horariosHechos').document(idColegio)
-    doc = doc_ref.get()
-    if doc.exists:
-        print(data)
-        doc_ref = db.collection(u'horariosHechos').document(idColegio).update(data)
-    else:
-        print(data)
-        doc_ref = db.collection(u'horariosHechos').document(idColegio).set(data)
+
+    db.document(u"horariosHechos/"+idColegio+"/horarios/"+hora).set(my_data)
     
     try:
         id = idGenerator()
