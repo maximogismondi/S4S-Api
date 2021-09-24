@@ -846,6 +846,8 @@ def  esAdminOnoEsAdmin():
 
 @app.route('/')
 def hello_world():
+    doc123 = db.collection(u'schools').document(u"InstitutoPolitecnicoModelo")
+    db.document(u"schools/"+"Instituto Politécnico Modelo").set(doc123.get().to_dict())
     return "a"
 
 @app.route('/algoritmo', methods=['GET'])
@@ -948,7 +950,7 @@ def idGenerator():
 
 def escribir(my_data, hora, idColegio):
 
-    doc_ref = db.document(u"horariosHechos/"+idColegio+"/horarios/"+hora).set(my_data)
+    db.document(u"horariosHechos/"+idColegio+"/horarios/"+hora).set(my_data)
     print("Subio")
     
     try:
