@@ -828,6 +828,22 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
 
     return horarios, materiasProfesores, horariosAulas
 
+
+@app.route('/adminONO', methods=['GET'])
+def  esAdminOnoEsAdmin():
+    idUsuario = request.args.get('idUsuario')
+    print(idUsuario)
+    doc_ref = db.collection(u'users').document(idUsuario)
+    doc = doc_ref.get()
+    if doc.exists:
+        print(f'Document data:')
+    else:
+        return(u'No such document!')
+ 
+    docDiccionario = doc.to_dict()
+    print(docDiccionario.get("emailVerified"))
+    return str(docDiccionario.get("emailVerified"))
+
 @app.route('/')
 def hello_world():
     return "a"
