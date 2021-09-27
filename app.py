@@ -43,7 +43,7 @@ class Posicion():
 app = Flask("appUWU")
 CORS(app)
 
-def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
+def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadProfesores):
     for materia in materias:
         for profe in materia.posibleProfesores:
             if profe not in profesores:
@@ -66,6 +66,8 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias):
 
     #Funcion que revisa si en determinado modulo, el profesor esta disponible
     def profesorDisponible(profesor, horarioVerificar, dia, turno, modulo, cursoExcepcion):
+        if profesor not in disponibilidadProfesores[dia][turno][modulo]:
+            return False
         for curso in cursos:
             if curso != cursoExcepcion:
                 if horarioVerificar[cursos.index(curso)][dia][turno][modulo] is not None and horarioVerificar[cursos.index(curso)][dia][turno][modulo].nombre.split('-')[0] != "Hueco" and materiasProfesores[horarioVerificar[cursos.index(curso)][dia][turno][modulo].nombre] == profesor:
@@ -938,9 +940,8 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
                         horarioDeDisponibilidad[dias.index(j)][turnos.index(k)][f].append(n)
                 indexModulos += 1
 
-    print(horarioDeDisponibilidad)
     try:
-        horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias)
+        horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
     except:
         print("An exception occurred in your pp") 
     
