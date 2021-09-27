@@ -3,7 +3,7 @@ import os
 from flask import Flask, json, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app
 app = Flask(__name__)
-cred = credentials.Certificate('key.json')
+cred = credentials.Certificate('${{secrets.KEYS}}')
 default_app = initialize_app(cred)
 db = firestore.client()
 todo_ref = db.collection('todos')
@@ -878,7 +878,6 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
 
     #docDiccionario es un diccionario de la escuela
     docDiccionario = doc.to_dict()
-    print(docDiccionario)
     aulas = []
     profesores = []
     dias = ["lunes", "martes", "miercoles", "jueves", "viernes"]
@@ -886,14 +885,21 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
     turnos = []
     materias = []
     horarios = []
+    modulos = []
+    disponibilidad = {}
 
     [cursos.append(i.get("nombre")) for i in docDiccionario["cursos"]]
     [aulas.append(i.get("nombre")) for i in docDiccionario["aulas"]]
     [profesores.append(i.get("nombre") + " " + i.get("apellido")) for i in docDiccionario["profesores"]]
+    for i in docDiccionario["profesores"]:
+        disponibilidad[i.get("nombre") + " " + i.get("apellido")] = i.get("disponibilidad")
+        #print(i.get("disponibilidad"))
     for i in docDiccionario["turnos"]:
         if len(i.get("modulos")) > 0:
             nombreT = str(i.get("turno"))
             cantidadModulosT = len(i.get("modulos"))
+            for i in i.get("modulos"):
+                modulos.append(i)
             t = Turno(nombreT, cantidadModulosT)
             turnos.append(t)
     for i in docDiccionario["materias"]:
@@ -914,6 +920,25 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
     for curso in cursos:
         materias.append(Materia("Hueco",curso, [], [], 0, 99, "white"))
 
+    #curso
+    #Dia
+    #turnoo
+    #modulo
+
+    horarioDeDisponibilidad = []
+    for j in dias:
+        horarioDeDisponibilidad.append([])
+        indexModulos = 0
+        for k in turnos:
+            horarioDeDisponibilidad[dias.index(j)].append([])
+            for f in range(k.cantModulos):
+                horarioDeDisponibilidad[dias.index(j)][turnos.index(k)].append([])
+                for n in profesores:
+                    if disponibilidad[n][j][k.nombre][modulos[indexModulos]["inicio"]]:
+                        horarioDeDisponibilidad[dias.index(j)][turnos.index(k)][f].append(n)
+                indexModulos += 1
+
+    print(horarioDeDisponibilidad)
     try:
         horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias)
     except:
