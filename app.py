@@ -936,7 +936,7 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
             for f in range(k.cantModulos):
                 horarioDeDisponibilidad[dias.index(j)][turnos.index(k)].append([])
                 for n in profesores:
-                    if disponibilidad[n][j][k.nombre][modulos[indexModulos]["inicio"]]:
+                    if modulos[indexModulos]["inicio"] in disponibilidad[n][j][k.nombre] and disponibilidad[n][j][k.nombre][modulos[indexModulos]["inicio"]]:
                         horarioDeDisponibilidad[dias.index(j)][turnos.index(k)][f].append(n)
                 indexModulos += 1
 
