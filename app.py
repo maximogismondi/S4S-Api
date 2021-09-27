@@ -3,7 +3,7 @@ import os
 from flask import Flask, json, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app
 app = Flask(__name__)
-cred = credentials.Certificate('${{secrets.KEYS}}')
+cred = credentials.Certificate('key.json')
 default_app = initialize_app(cred)
 db = firestore.client()
 todo_ref = db.collection('todos')
@@ -974,7 +974,6 @@ def idGenerator():
 def escribir(my_data, hora, idColegio):
 
     db.document(u"horariosHechos/"+idColegio+"/horarios/"+hora).set(my_data)
-    print("Subio")
     
     try:
         id = idGenerator()

@@ -2,4 +2,3 @@ sudo apt install python3.8-venv
 sudo python3 -m venv API2ENV
 source API2ENV/bin/activate
 sudo pip install flask_cors gunicorn firebase-admin plotly flask flask_restful flask_sqlalchemy flask_migrate flask_marshmallow marshmallow-sqlalchemy
-flask run 
