@@ -974,6 +974,7 @@ def idGenerator():
 def escribir(my_data, hora, idColegio):
 
     db.document(u"horariosHechos/"+idColegio+"/horarios/"+hora).set(my_data)
+    print("Subio")
     
     try:
         id = idGenerator()
