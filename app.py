@@ -310,7 +310,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
         if not profesorDisponible(posibleProfesor, horariosAValidar, posMateria2.dia, posMateria2.turno, posMateria2.modulo, cursos[posMateria2.curso]):
             return False
-        
+
         #disponibilidad aulas
         if not aulaDisponible(horariosAulas[posMateria2.curso][posMateria2.dia][posMateria2.turno][posMateria2.modulo], horariosAValidar, posMateria1.dia, posMateria1.turno, posMateria1.modulo, cursos[posMateria1.curso]):
             return False
@@ -332,9 +332,9 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
             horariosAValidar[posMateria1.curso][posMateria1.dia][posMateria1.turno][posMateria1.modulo], horariosAValidar[posMateria2.curso][posMateria2.dia][posMateria2.turno][posMateria2.modulo] = horariosAValidar[posMateria2.curso][posMateria2.dia][posMateria2.turno][posMateria2.modulo], horariosAValidar[posMateria1.curso][posMateria1.dia][posMateria1.turno][posMateria1.modulo]
             return False
 
-            #saco el swap temporal
+        #saco el swap temporal
         horariosAValidar[posMateria1.curso][posMateria1.dia][posMateria1.turno][posMateria1.modulo], horariosAValidar[posMateria2.curso][posMateria2.dia][posMateria2.turno][posMateria2.modulo] = horariosAValidar[posMateria2.curso][posMateria2.dia][posMateria2.turno][posMateria2.modulo], horariosAValidar[posMateria1.curso][posMateria1.dia][posMateria1.turno][posMateria1.modulo]
-
+        
         #Resticciones extras ACA
 
         return True
@@ -458,6 +458,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
                             
                             #pruebo swappear todos los modulos que tengan un error (swwap valido sobre si mismo sirve para eso)
                             if horarios[posMateria1.curso][posMateria1.dia][posMateria1.turno][posMateria1.modulo].nombre == materia.nombre and not swapValido(copiaHorarios, posMateria1, posMateria1, materiasProfesores[materia.nombre], horariosAulas[posMateria1.curso][posMateria1.dia][posMateria1.turno][posMateria1.modulo]):
+                                print("uno mal")
                                 for diaSwap in range(len(dias)):
                                     for turnoSwap in range(len(turnos)):
                                         for moduloSwap in range(turnos[turnoSwap].cantModulos):
@@ -465,8 +466,9 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
                                                 materiaSwap = copiaHorarios[cursos.index(materia.curso)][diaSwap][turnoSwap][moduloSwap]
                                                 posMateria2 = Posicion(cursos.index(materiaSwap.curso), diaSwap, turnoSwap, moduloSwap)
                                                 #chequeo si el swap es valido
-                                                if materiaSwap.nombre != materia.nombre:     
+                                                if materiaSwap.nombre != materia.nombre:
                                                     if swapValido(copiaHorarios, posMateria1, posMateria2, posibleProfesor, posibleAula):
+                                                        print(posMateria1, posMateria2)
                                                         copiaHorarios[posMateria1.curso][posMateria1.dia][posMateria1.turno][posMateria1.modulo], copiaHorarios[posMateria2.curso][posMateria2.dia][posMateria2.turno][posMateria2.modulo] = copiaHorarios[posMateria2.curso][posMateria2.dia][posMateria2.turno][posMateria2.modulo], copiaHorarios[posMateria1.curso][posMateria1.dia][posMateria1.turno][posMateria1.modulo]
                                                         horariosAulas[posMateria1.curso][posMateria1.dia][posMateria1.turno][posMateria1.modulo], horariosAulas[posMateria2.curso][posMateria2.dia][posMateria2.turno][posMateria2.modulo] = horariosAulas[posMateria2.curso][posMateria2.dia][posMateria2.turno][posMateria2.modulo], posibleAula
                                                         break
@@ -934,7 +936,7 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
         for k in turnos:
             horarioDeDisponibilidad[dias.index(j)].append([])
             for f in range(k.cantModulos):
-                horarioDeDisponibilidad[dias.index(j)][turnos.index(k)].append([])
+                horarioDeDisponibilidad[dias.index(j)][turnos.index(k)].append(["Hueco"])
                 for n in profesores:
                     if modulos[indexModulos]["inicio"] in disponibilidad[n][j][k.nombre] and disponibilidad[n][j][k.nombre][modulos[indexModulos]["inicio"]]:
                         horarioDeDisponibilidad[dias.index(j)][turnos.index(k)][f].append(n)
@@ -954,7 +956,8 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
                 horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre] = {}
                 for modulo in range(turnos[turno].cantModulos):
                     horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horarios[curso][dia][turno][modulo].nombre
-    
+
+
     horariosAulasDiccionario = {}
     for curso in range(len(cursos)):
         horariosAulasDiccionario[cursos[curso]] = {}
