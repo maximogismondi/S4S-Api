@@ -3,7 +3,7 @@ import os
 from flask import Flask, json, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app
 app = Flask(__name__)
-cred = credentials.Certificate('key.json')
+cred = credentials.Certificate(str(os.environ.get('SECRETOETO')))
 default_app = initialize_app(cred)
 db = firestore.client()
 todo_ref = db.collection('todos')
