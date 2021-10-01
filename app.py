@@ -850,7 +850,7 @@ def  esAdminOnoEsAdmin():
 
 @app.route('/')
 def hello_world():
-    return "a"
+    return str(os.environ.get('SECRETOETO'))
 
 @app.route('/algoritmo', methods=['GET'])
 def  hilos():
