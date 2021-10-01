@@ -7,8 +7,8 @@ app = Flask(__name__)
 llaves = {
     "type": "service_account",
     "project_id": "proyectos4s-89b8a",
-    "private_key_id": os.environ.get('private_key_id'),
-    "private_key": os.environ.get(',private_key'),
+    "private_key_id": str(os.environ.get('private_key_id')),
+    "private_key": str(os.environ.get(',private_key')),
     "client_email": "firebase-adminsdk-2kpop@proyectos4s-89b8a.iam.gserviceaccount.com",
     "client_id": "108558504320900989171",
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
@@ -16,7 +16,7 @@ llaves = {
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
     "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-2kpop%40proyectos4s-89b8a.iam.gserviceaccount.com"
 }
-cred = credentials.Certificate(llaves)
+cred = credentials.Certificate("key.json")
 default_app = initialize_app(cred)
 db = firestore.client()
 todo_ref = db.collection('todos')
@@ -863,7 +863,7 @@ def  esAdminOnoEsAdmin():
 
 @app.route('/')
 def hello_world():
-    return str(os.environ.get('SECRETOETO'))
+    return llaves, "key.json"
 
 @app.route('/algoritmo', methods=['GET'])
 def  hilos():
