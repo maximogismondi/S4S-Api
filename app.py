@@ -16,7 +16,6 @@ llaves = {
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
     "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-2kpop%40proyectos4s-89b8a.iam.gserviceaccount.com"
 }
-
 cred = credentials.Certificate(llaves)
 default_app = initialize_app(cred)
 db = firestore.client()
