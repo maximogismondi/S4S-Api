@@ -6,7 +6,7 @@ from firebase_admin import credentials, firestore, initialize_app
 app = Flask(__name__)
 llaves = {
     "type": "service_account",
-    "project_id": "proyectos4s-89b8a"
+    "project_id": "proyectos4s-89b8a",
     "private_key_id": str(os.environ.get('private_key_id')),
     "private_key": str(os.environ.get(',private_key')),
     "client_email": "firebase-adminsdk-2kpop@proyectos4s-89b8a.iam.gserviceaccount.com",
