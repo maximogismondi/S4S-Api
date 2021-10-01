@@ -864,9 +864,7 @@ def  esAdminOnoEsAdmin():
 
 @app.route('/')
 def hello_world():
-    print(llaves)
-
-    return llaves
+    return "A"
 
 @app.route('/algoritmo', methods=['GET'])
 def  hilos():
