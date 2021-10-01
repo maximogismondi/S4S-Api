@@ -7,8 +7,8 @@ app = Flask(__name__)
 llaves = {
     "type": "service_account",
     "project_id": "proyectos4s-89b8a",
-    "private_key_id": str(os.environ.get('private_key_id')),
-    "private_key": str(os.environ.get(',private_key')),
+    "private_key_id": os.environ.get('private_key_id'),
+    "private_key": os.environ.get(',private_key'),
     "client_email": "firebase-adminsdk-2kpop@proyectos4s-89b8a.iam.gserviceaccount.com",
     "client_id": "108558504320900989171",
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
