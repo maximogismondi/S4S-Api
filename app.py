@@ -897,7 +897,7 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
 
     #docDiccionario es un diccionario de la escuela
     docDiccionario = doc.to_dict()
-    print(doc_ref,docDiccionario)
+    print(docDiccionario)
     aulas = []
     profesores = []
     dias = ["lunes", "martes", "miercoles", "jueves", "viernes"]
