@@ -893,9 +893,11 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
         print(f'Document data:')
     else:
         return(u'No such document!')
+    
 
     #docDiccionario es un diccionario de la escuela
     docDiccionario = doc.to_dict()
+    print(doc_ref,docDiccionario)
     aulas = []
     profesores = []
     dias = ["lunes", "martes", "miercoles", "jueves", "viernes"]
