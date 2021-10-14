@@ -59,7 +59,7 @@ class Posicion():
 app = Flask("appUWU")
 CORS(app)
 
-@app.route('/adminONO', methods=['GET'])
+@app.route('/adminONO', methods=['POST'])
 def  esAdminOnoEsAdmin():
     content = request.json
     if str(os.environ.get('token')) == content['token']:
@@ -77,14 +77,14 @@ def  esAdminOnoEsAdmin():
         return str(docDiccionario.get("emailVerified"))
     return "Nao Nao voce no teneu token"
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['POST'])
 def hello_world():
     content = request.json
     if str(os.environ.get('token')) == content['token']:
         return "A"
     return "Nao Nao voce no teneu token"
 
-@app.route('/algoritmo', methods=['GET', 'POST'])
+@app.route('/algoritmo', methods=['POST'])
 def  hilos():
     content = request.json
     if str(os.environ.get('token')) == content['token']:
