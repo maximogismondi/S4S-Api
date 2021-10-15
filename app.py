@@ -80,8 +80,6 @@ def  esAdminOnoEsAdmin():
 @app.route('/', methods=['POST'])
 def hello_world():
     content = request.json
-    print(str(os.environ.get('token')))
-    print(content['token'])
     if str(os.environ.get('token')) == content['token']:
         return "A"
     return "Nao Nao voce no teneu token"
