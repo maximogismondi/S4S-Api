@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from typing import Collection
 import os
 import json
