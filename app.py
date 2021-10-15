@@ -211,6 +211,7 @@ def idGenerator():
     return doc_ref.id
 
 def escribir(my_data, hora, idColegio):
+    print(my_data)
 
     db.document(u"horariosHechos/"+idColegio+"/horarios/"+hora).set(my_data)
     
