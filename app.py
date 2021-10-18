@@ -141,23 +141,27 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
                 modulos.append(i)
             t = Turno(nombreT, cantidadModulosT)
             turnos.append(t)
-    for i in docDiccionario["materias"]:
-        nombreM = i.get("nombre")
-        cursoM = i.get("curso")
-        posiblesProfesoresM = []
-        for profesor in i.get("profesoresCapacitados"):
-            if (i.get("profesoresCapacitados")[profesor]):
-                posiblesProfesoresM.append(profesor)
-        posiblesAulasM = []
-        for aula in i.get("aulasMateria"):
-            if (i.get("aulasMateria")[aula]):
-                posiblesAulasM.append(aula)
-        cantidadDeModulosTotalM = i.get("cantidadDeModulosTotal")
-        cantidadMaximaDeModulosPorDiaM = i.get("cantidadMaximaDeModulosPorDia")
-        a = Materia(nombreM, cursoM, posiblesProfesoresM, posiblesAulasM, cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM, "red")
-        materias.append(a)
     for curso in cursos:
-        materias.append(Materia("Hueco",curso, [], [], 0, 99, "white"))
+        materias.append([])
+        for i in docDiccionario["materias"]:
+
+            if i.get("curso") == curso:
+                nombreM = i.get("nombre")
+                cursoM = i.get("curso")
+                posiblesProfesoresM = []
+                for profesor in i.get("profesoresCapacitados"):
+                    if (i.get("profesoresCapacitados")[profesor]):
+                        posiblesProfesoresM.append(profesor)
+                posiblesAulasM = []
+                for aula in i.get("aulasMateria"):
+                    if (i.get("aulasMateria")[aula]):
+                        posiblesAulasM.append(aula)
+                cantidadDeModulosTotalM = i.get("cantidadDeModulosTotal")
+                cantidadMaximaDeModulosPorDiaM = i.get("cantidadMaximaDeModulosPorDia")
+                a = Materia(nombreM, cursoM, posiblesProfesoresM, posiblesAulasM, cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM, "red")
+                materias[-1].append(a)
+        materias[-1].append(Materia("Hueco",curso, [], [], 0, 99, "white"))
+            
 
     #curso
     #Dia
