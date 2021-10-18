@@ -1,10 +1,11 @@
 from typing import Collection
-import os, json
+import os
+from algoritmo import algoritmo
+import json
 from flask import Flask, json, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app
-import algoritmo
+app = Flask(__name__) #a
 
-app = Flask(__name__)
 llaves = {
     "type": "service_account",
     "project_id": "proyectos4s-89b8a",
@@ -26,6 +27,9 @@ todo_ref = db.collection('todos')
 from flask_cors import CORS, cross_origin
 from flask import Flask
 import gunicorn
+import copy, random, time
+import copy, operator
+import plotly.graph_objects as go
 from datetime import datetime
 import threading
 from time import sleep
@@ -55,53 +59,61 @@ class Posicion():
 app = Flask("appUWU")
 CORS(app)
 
-@app.route('/adminONO', methods=['GET'])
+@app.route('/adminONO', methods=['POST'])
 def  esAdminOnoEsAdmin():
-    idUsuario = request.args.get('idUsuario')
-    print(idUsuario)
-    doc_ref = db.collection(u'users').document(idUsuario)
-    doc = doc_ref.get()
-    if doc.exists:
-        print(f'Document data:')
-    else:
-        return(u'No such document!')
- 
-    docDiccionario = doc.to_dict()
-    print(docDiccionario.get("emailVerified"))
-    return str(docDiccionario.get("emailVerified"))
+    content = request.json
+    if str(os.environ.get('token')) == content['token']:
+        idUsuario = request.args.get('idUsuario')
+        print(idUsuario)
+        doc_ref = db.collection(u'users').document(idUsuario)
+        doc = doc_ref.get()
+        if doc.exists:
+            print(f'Document data:')
+        else:
+            return(u'No such document!')
+    
+        docDiccionario = doc.to_dict()
+        print(docDiccionario.get("emailVerified"))
+        return str(docDiccionario.get("emailVerified"))
+    return "Nao Nao voce no teneu token"
 
-@app.route('/')
+@app.route('/', methods=['POST'])
 def hello_world():
-    return "A"
+    content = request.json
+    if str(os.environ.get('token')) == content['token']:
+        return "A"
+    return "Nao Nao voce no teneu token"
 
-@app.route('/algoritmo', methods=['GET'])
+@app.route('/algoritmo', methods=['POST'])
 def  hilos():
-    idColegio = request.args.get('idColegio')
-    hora = str(datetime.fromisoformat( datetime.now().isoformat(timespec='minutes') ))
-    def math_fun():
-        # The sleep here is simply to make it clear that this happens in the background
-        sleep(1) 
-        runAlgorithm(idColegio, hora)
+    content = request.json
+    if str(os.environ.get('token')) == content['token']:
+        idColegio = request.args.get('idColegio')
+        hora = str(datetime.fromisoformat( datetime.now().isoformat(timespec='minutes') ))
+        def math_fun():
+            # The sleep here is simply to make it clear that this happens in the background
+            sleep(1) 
+            runAlgorithm(idColegio, hora)
 
-    def fun():
-        # Create thread to run math_fun for each argument in x 
-        t = threading.Thread(target=math_fun)
-        t.setDaemon(False)
-        t.start()
-        print("Ejecutado prro")
+        def fun():
+            # Create thread to run math_fun for each argument in x 
+            t = threading.Thread(target=math_fun)
+            t.setDaemon(False)
+            t.start()
+            print("Ejecutado prro")
 
-    fun()
-    return hora
+        fun()
+        return hora
+    return "Nao Nao voce no teneu token"
 
 def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
     print(idColegio)
     doc_ref = db.collection(u'schools').document(idColegio)
     doc = doc_ref.get()
     if doc.exists:
-        print(f'Document found!')
+        print(f'Document data:')
     else:
         return(u'No such document!')
-    
 
     #docDiccionario es un diccionario de la escuela
     docDiccionario = doc.to_dict()
@@ -114,12 +126,13 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
     horarios = []
     modulos = []
     disponibilidad = {}
+
     [cursos.append(i.get("nombre")) for i in docDiccionario["cursos"]]
     [aulas.append(i.get("nombre")) for i in docDiccionario["aulas"]]
     [profesores.append(i.get("nombre") + " " + i.get("apellido")) for i in docDiccionario["profesores"]]
     for i in docDiccionario["profesores"]:
         disponibilidad[i.get("nombre") + " " + i.get("apellido")] = i.get("disponibilidad")
-
+        #print(i.get("disponibilidad"))
     for i in docDiccionario["turnos"]:
         if len(i.get("modulos")) > 0:
             nombreT = str(i.get("turno"))
@@ -128,25 +141,32 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
                 modulos.append(i)
             t = Turno(nombreT, cantidadModulosT)
             turnos.append(t)
-
     for curso in cursos:
-        materias.append([Materia("Hueco", curso, [], [], 0, 99, "white")])
+        materias.append([])
+        for i in docDiccionario["materias"]:
 
-    for i in docDiccionario["materias"]:
-        nombreM = i.get("nombre")
-        cursoM = i.get("curso")
-        posiblesProfesoresM = []
-        for profesor in i.get("profesoresCapacitados"):
-            if (i.get("profesoresCapacitados")[profesor]):
-                posiblesProfesoresM.append(profesor)
-        posiblesAulasM = []
-        for aula in i.get("aulasMateria"):
-            if (i.get("aulasMateria")[aula]):
-                posiblesAulasM.append(aula)
-        cantidadDeModulosTotalM = i.get("cantidadDeModulosTotal")
-        cantidadMaximaDeModulosPorDiaM = i.get("cantidadMaximaDeModulosPorDia")
-        a = Materia(nombreM, cursoM, posiblesProfesoresM, posiblesAulasM, cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM, "red")
-        materias[cursos.index(a.curso)].append(a)
+            if i.get("curso") == curso:
+                nombreM = i.get("nombre")
+                cursoM = i.get("curso")
+                posiblesProfesoresM = []
+                for profesor in i.get("profesoresCapacitados"):
+                    if (i.get("profesoresCapacitados")[profesor]):
+                        posiblesProfesoresM.append(profesor)
+                posiblesAulasM = []
+                for aula in i.get("aulasMateria"):
+                    if (i.get("aulasMateria")[aula]):
+                        posiblesAulasM.append(aula)
+                cantidadDeModulosTotalM = i.get("cantidadDeModulosTotal")
+                cantidadMaximaDeModulosPorDiaM = i.get("cantidadMaximaDeModulosPorDia")
+                a = Materia(nombreM, cursoM, posiblesProfesoresM, posiblesAulasM, cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM, "red")
+                materias[-1].append(a)
+        materias[-1].append(Materia("Hueco",curso, [], [], 0, 99, "white"))
+            
+
+    #curso
+    #Dia
+    #turnoo
+    #modulo
 
     horarioDeDisponibilidad = []
     for j in dias:
@@ -161,10 +181,10 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
                         horarioDeDisponibilidad[dias.index(j)][turnos.index(k)][f].append(n)
                 indexModulos += 1
 
-    try:
-        horarios, materiasProfesores, horariosAulas = algoritmo.algoritmo(aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
-    except:
-        print("An exception occurred in your pp") 
+    #try:
+    horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
+    #except:
+    #    print("An exception occurred in your pp") 
     
     horariosDiccionario = {}
     for curso in range(len(cursos)):
@@ -195,6 +215,7 @@ def idGenerator():
     return doc_ref.id
 
 def escribir(my_data, hora, idColegio):
+    print(my_data)
 
     db.document(u"horariosHechos/"+idColegio+"/horarios/"+hora).set(my_data)
     
@@ -208,6 +229,3 @@ def escribir(my_data, hora, idColegio):
 port = int(os.environ.get('PORT', 3304))
 if __name__ == '__main__':
     app.run(threaded=True, host='0.0.0.0', port=port)
-
-#fijarse cuando se sube algo
-#importar algoritmo
