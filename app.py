@@ -107,7 +107,7 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
     docDiccionario = doc.to_dict()
     aulas = []
     profesores = []
-    dias = ["lunes", "martes", "miercoles", "jueves", "viernes"]
+    dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
     cursos = []
     turnos = []
     materias = []
