@@ -177,10 +177,10 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
                         horarioDeDisponibilidad[dias.index(j)][turnos.index(k)][f].append(n)
                 indexModulos += 1
 
-    try:
-        horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
-    except:
-        print("An exception occurred in your pp") 
+    #try:
+    horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
+    #except:
+    #    print("An exception occurred in your pp") 
     
     horariosDiccionario = {}
     for curso in range(len(cursos)):
