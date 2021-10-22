@@ -1083,5 +1083,5 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
     #------------------------------------^Reagrupador^-----------------------------------------------------
     #-----------------------------------------------------------^Swap^------------------------------------------------------------
-
+    print(horarios, materiasProfesores, horariosAulas)
     return horarios, materiasProfesores, horariosAulas
