@@ -88,12 +88,12 @@ def hello_world():
 def  hilos():
     content = request.json
     if str(os.environ.get('token')) == content['token']:
-        idColegio = request.args.get('idColegio')
+        nombreColegio = request.args.get('nombreColegio')
         hora = str(datetime.fromisoformat( datetime.now().isoformat(timespec='minutes') ))
         def math_fun():
             # The sleep here is simply to make it clear that this happens in the background
             sleep(1) 
-            runAlgorithm(idColegio, hora)
+            runAlgorithm(nombreColegio, hora)
 
         def fun():
             # Create thread to run math_fun for each argument in x 
@@ -106,9 +106,9 @@ def  hilos():
         return hora
     return "Nao Nao voce no teneu token"
 
-def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
-    print(idColegio)
-    doc_ref = db.collection(u'schools').document(idColegio)
+def runAlgorithm(nombreColegio = "jejeboi", hora = "algo fallo"):
+    print(nombreColegio)
+    doc_ref = db.collection(u'schools').document(nombreColegio)
     doc = doc_ref.get()
     if doc.exists:
         print(f'Document data:')
@@ -204,7 +204,7 @@ def runAlgorithm(idColegio = "jejeboi", hora = "algo fallo"):
                         horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horariosAulas[curso][dia][turno][modulo]
         
         diccionarioColegio = {"horarios":horariosDiccionario, "materiasProfesores":materiasProfesores, "horariosAulas":horariosAulasDiccionario}
-        escribir(diccionarioColegio, hora, idColegio)
+        escribir(diccionarioColegio, hora, nombreColegio)
     except:
        print("An exception occurred in your pp") 
     
@@ -212,9 +212,9 @@ def idGenerator():
     doc_ref = db.collection(u'school').document()
     return doc_ref.id
 
-def escribir(my_data, hora, idColegio):
+def escribir(my_data, hora, nombreColegio):
     print(my_data)
-    db.document(u"horariosHechos/"+idColegio+"/horarios/"+hora).set(my_data)
+    db.document(u"schools/"+nombreColegio+"/horarios/"+hora).set(my_data)
     
     try:
         id = idGenerator()
