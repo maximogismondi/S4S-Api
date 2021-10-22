@@ -755,9 +755,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
                             if materia.modulosMinimos == 0 and iteraciones == 2:
                                 continue
 
-                            if materiaAPoner.nombre == "Programacion - 6C":
-                                print("Aaaaaa")
-                            
                             if "Hueco" in materiaAPoner.nombre or not validarModulosTurno(horarios, dia, materiaAPoner):
                                 continue
 
@@ -819,7 +816,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
                     curso = cursos.index(materia.curso)
                     dia = encontrarTurnoConMasEspacios(horarios, curso)[0]
                     turno = encontrarTurnoConMasEspacios(horarios, curso)[1]
-                    print(curso, dia, turno)
                     modulosRestantes = materia.cantModulos - contarModulosTotal(horarios, materia)
                     cantHuecos = 0
                     for modulo in range(turnos[turno].cantModulos):
@@ -983,7 +979,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
                             
     iteracion = 0
     while not checkeo() and iteracion != 100:
-        print(iteracion)
         horarios, horariosAulas = swap(horarios, horariosAulas)
         iteracion += 1
             
@@ -1082,7 +1077,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
                     horariosCopia = horariosAulas
 
     for i in range(10):
-        print(i)
         agrupadorPrincipalAulas(horariosAulas, horarios)
         agrupadorSecundarioAulas(horariosAulas, horarios)
         agrupadorTerciarioAulas(horariosAulas, horarios)
