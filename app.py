@@ -33,14 +33,13 @@ import threading
 from time import sleep
 
 class Materia():
-    def __init__(self, nombre, curso, posibleProfesores, posiblesAulas, cantModulos, modulosContinuos, color):
+    def __init__(self, nombre, curso, posibleProfesores, posiblesAulas, cantModulos, modulosContinuos):
         self.nombre = nombre + "-" + curso
         self.curso = curso
         self.posibleProfesores = posibleProfesores
         self.posiblesAulas = posiblesAulas
         self.cantModulos = cantModulos
         self.modulosContinuos = modulosContinuos
-        self.color = color
 
 class Turno():
     def __init__(self, nombre, cantModulos):
@@ -56,24 +55,6 @@ class Posicion():
 
 app = Flask("appUWU")
 CORS(app)
-
-@app.route('/adminONO', methods=['POST'])
-def  esAdminOnoEsAdmin():
-    content = request.json
-    if str(os.environ.get('token')) == content['token']:
-        idUsuario = request.args.get('idUsuario')
-        print(idUsuario)
-        doc_ref = db.collection(u'users').document(idUsuario)
-        doc = doc_ref.get()
-        if doc.exists:
-            print(f'Document data:')
-        else:
-            return(u'No such document!')
-    
-        docDiccionario = doc.to_dict()
-        print(docDiccionario.get("emailVerified"))
-        return str(docDiccionario.get("emailVerified"))
-    return "Nao Nao voce no teneu token"
 
 @app.route('/', methods=['POST'])
 def hello_world():
@@ -122,21 +103,20 @@ def runAlgorithm(nombreColegio = "jejeboi", hora = "algo fallo"):
     turnos = []
     materias = []
     horarios = []
-    modulos = []
     disponibilidad = {}
+    
+    modulos = []
 
     [cursos.append(i.get("nombre")) for i in docDiccionario["cursos"]]
     [aulas.append(i.get("nombre")) for i in docDiccionario["aulas"]]
     [profesores.append(i.get("nombre") + " " + i.get("apellido")) for i in docDiccionario["profesores"]]
-    for i in docDiccionario["profesores"]:
-        disponibilidad[i.get("nombre") + " " + i.get("apellido")] = i.get("disponibilidad")
-        #print(i.get("disponibilidad"))
     for i in docDiccionario["turnos"]:
         if len(i.get("modulos")) > 0:
             nombreT = str(i.get("turno"))
             cantidadModulosT = len(i.get("modulos"))
-            for i in i.get("modulos"):
-                modulos.append(i)
+            modulos.append([])
+            for j in i.get("modulos"):
+                modulos[turnos.index(i)].append(j)
             t = Turno(nombreT, cantidadModulosT)
             turnos.append(t)
     for curso in cursos:
@@ -152,28 +132,23 @@ def runAlgorithm(nombreColegio = "jejeboi", hora = "algo fallo"):
                 cantidadDeModulosTotalM = i.get("cantidadDeModulosTotal")
                 cantidadMaximaDeModulosPorDiaM = i.get("cantidadMaximaDeModulosPorDia")
 
-                a = Materia(nombreM, cursoM, posiblesProfesoresM, posiblesAulasM, cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM, "red")
+                a = Materia(nombreM, cursoM, posiblesProfesoresM, posiblesAulasM, cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM)
                 materias[-1].append(a)
 
-        materias[-1].append(Materia("Hueco",curso, [], [], 0, 99, "white"))    
-
-    #curso
-    #Dia
-    #turnoo
-    #modulo
+        materias[-1].append(Materia("Hueco",curso, [], [], 0, 99))
 
     horarioDeDisponibilidad = []
-    for j in dias:
+    for dia in dias:
         horarioDeDisponibilidad.append([])
-        indexModulos = 0
-        for k in turnos:
-            horarioDeDisponibilidad[dias.index(j)].append([])
-            for f in range(k.cantModulos):
-                horarioDeDisponibilidad[dias.index(j)][turnos.index(k)].append(["Hueco"])
-                for n in profesores:
-                    if modulos[indexModulos]["inicio"] in disponibilidad[n][j][k.nombre] and disponibilidad[n][j][k.nombre][modulos[indexModulos]["inicio"]]:
-                        horarioDeDisponibilidad[dias.index(j)][turnos.index(k)][f].append(n)
-                indexModulos += 1
+        for turno in turnos:
+            horarioDeDisponibilidad[dias.index(dia)].append([])
+            for modulo in modulos[turnos.index(turno)]:
+                horarioDeDisponibilidad[dias.index(dia)][turnos.index(turno)].append(["Hueco"])
+                for profesor in docDiccionario["profesores"]:
+                    if profesor["disponibilidad"][dia][turno.nombre][modulo]:
+                        horarioDeDisponibilidad[dias.index(dia)][turnos.index(turno)][modulos[turnos.index(turno)].index(modulo)].append(profesor.get("nombre") + " " + profesor.get("apellido"))
+
+    print(aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
 
     try:
         horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
