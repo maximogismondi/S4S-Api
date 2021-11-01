@@ -164,8 +164,9 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
     for turno in turnos:
         print(turno.nombre, turno.cantModulos)
     print("materias")
-    for materia in materias:
-        print(materia.nombre, materia.curso, materia.posibleProfesores, materia.posiblesAulas, materia.cantModulos, materia.modulosContinuos)
+    for curso in range(len(cursos)):
+        for materia in materias[curso]:
+            print(materia.nombre, materia.curso, materia.posibleProfesores, materia.posiblesAulas, materia.cantModulos, materia.modulosContinuos)
     print("cursos", cursos)
     print("dias", dias)
     print("profesores", profesores)
