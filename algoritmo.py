@@ -27,14 +27,14 @@ class Posicion():
 
 def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadProfesores):
 
-    cargaAlgoritmo = {}
-    cargaAlgoritmo["Funciones"] = 0
-    cargaAlgoritmo["AgrupadorDeAulas"] = 0
-    cargaAlgoritmo["Swap"] = 0
-    cargaAlgoritmo["Inicializaciones"] = 0
-    cargaAlgoritmo["Greedy"] = 0
-    cargaAlgoritmo["Greedy2"] = 0
-    cargaAlgoritmo["GreedyAulas"] = 0
+	cargaAlgoritmo = {}
+	cargaAlgoritmo["Funciones"] = 0
+	cargaAlgoritmo["AgrupadorDeAulas"] = 0
+	cargaAlgoritmo["Swap"] = 0
+	cargaAlgoritmo["Inicializaciones"] = 0
+	cargaAlgoritmo["Greedy"] = 0
+	cargaAlgoritmo["Greedy2"] = 0
+	cargaAlgoritmo["GreedyAulas"] = 0
 	# ordenar materias por modulosContinuos
 	for curso in range(len(cursos)):
 	    materias[curso] = sorted(
