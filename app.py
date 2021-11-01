@@ -160,8 +160,8 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
                         horarioDeDisponibilidad[-1][-1][-1].append(profesor.get("nombre") + " " + profesor.get("apellido"))
 
     print("aulas", aulas,)
-    print("turnos", map(turnos))
-    print("materias", map(materias))
+    print("turnos", turnos.__dict__)
+    print("materias", materias.__dict__)
     print("cursos", cursos)
     print("dias", dias)
     print("profesores", profesores)
