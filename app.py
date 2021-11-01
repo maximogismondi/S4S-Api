@@ -1,3 +1,14 @@
+import time
+import random
+import operator
+import copy
+from time import sleep
+import threading
+from datetime import datetime
+import plotly.graph_objects as go
+import gunicorn
+from flask import Flask
+from flask_cors import CORS, cross_origin
 import os
 from algoritmo import algoritmo
 from flask import Flask,  request, jsonify
@@ -22,15 +33,6 @@ default_app = initialize_app(cred)
 db = firestore.client()
 todo_ref = db.collection('todos')
 
-from flask_cors import CORS, cross_origin
-from flask import Flask
-import gunicorn
-import copy, random, time
-import copy, operator
-import plotly.graph_objects as go
-from datetime import datetime
-import threading
-from time import sleep
 
 class Materia():
     def __init__(self, nombre, curso, posibleProfesores, posiblesAulas, cantModulos, modulosContinuos):
@@ -41,10 +43,12 @@ class Materia():
         self.cantModulos = cantModulos
         self.modulosContinuos = modulosContinuos
 
+
 class Turno():
     def __init__(self, nombre, cantModulos):
         self.nombre = nombre
         self.cantModulos = cantModulos
+
 
 class Posicion():
     def __init__(self, curso, dia, turno, modulo):
@@ -53,8 +57,10 @@ class Posicion():
         self.turno = turno
         self.modulo = modulo
 
+
 app = Flask("appUWU")
 CORS(app)
+
 
 @app.route('/', methods=['POST'])
 def hello_world():
@@ -63,19 +69,22 @@ def hello_world():
         return "A"
     return "Nao Nao voce no teneu token"
 
+
 @app.route('/algoritmo', methods=['POST'])
-def  hilos():
+def hilos():
     content = request.json
     if str(os.environ.get('token')) == content['token']:
         nombreColegio = request.args.get('nombreColegio')
-        hora = str(datetime.fromisoformat( datetime.now().isoformat(timespec='minutes') ))
+        hora = str(datetime.fromisoformat(
+            datetime.now().isoformat(timespec='minutes')))
+
         def math_fun():
             # The sleep here is simply to make it clear that this happens in the background
-            sleep(1) 
+            sleep(1)
             runAlgorithm(nombreColegio, hora)
 
         def fun():
-            # Create thread to run math_fun for each argument in x 
+            # Create thread to run math_fun for each argument in x
             t = threading.Thread(target=math_fun)
             t.setDaemon(False)
             t.start()
@@ -85,7 +94,8 @@ def  hilos():
         return hora
     return "Nao Nao voce no teneu token"
 
-def runAlgorithm(nombreColegio = "jejeboi", hora = "algo fallo"):
+
+def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
     print(nombreColegio)
     doc_ref = db.collection(u'schools').document(nombreColegio)
     doc = doc_ref.get()
@@ -94,7 +104,7 @@ def runAlgorithm(nombreColegio = "jejeboi", hora = "algo fallo"):
     else:
         return(u'No such document!')
 
-    #docDiccionario es un diccionario de la escuela
+    # docDiccionario es un diccionario de la escuela
     docDiccionario = doc.to_dict()
     aulas = []
     profesores = []
@@ -104,12 +114,13 @@ def runAlgorithm(nombreColegio = "jejeboi", hora = "algo fallo"):
     materias = []
     horarios = []
     disponibilidad = {}
-    
+
     modulos = []
 
     [cursos.append(i.get("nombre")) for i in docDiccionario["cursos"]]
     [aulas.append(i.get("nombre")) for i in docDiccionario["aulas"]]
-    [profesores.append(i.get("nombre") + " " + i.get("apellido")) for i in docDiccionario["profesores"]]
+    [profesores.append(i.get("nombre") + " " + i.get("apellido"))
+     for i in docDiccionario["profesores"]]
     for i in docDiccionario["turnos"]:
         if len(i.get("modulos")) > 0:
             nombreT = str(i.get("turno"))
@@ -130,12 +141,14 @@ def runAlgorithm(nombreColegio = "jejeboi", hora = "algo fallo"):
                 posiblesAulasM = i.get("aulasMateria")
 
                 cantidadDeModulosTotalM = i.get("cantidadDeModulosTotal")
-                cantidadMaximaDeModulosPorDiaM = i.get("cantidadMaximaDeModulosPorDia")
+                cantidadMaximaDeModulosPorDiaM = i.get(
+                    "cantidadMaximaDeModulosPorDia")
 
-                a = Materia(nombreM, cursoM, posiblesProfesoresM, posiblesAulasM, cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM)
+                a = Materia(nombreM, cursoM, posiblesProfesoresM, posiblesAulasM,
+                            cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM)
                 materias[-1].append(a)
 
-        materias[-1].append(Materia("Hueco",curso, [], [], 0, 99))
+        materias[-1].append(Materia("Hueco", curso, [], [], 0, 99))
 
     horarioDeDisponibilidad = []
     for dia in dias:
@@ -143,25 +156,30 @@ def runAlgorithm(nombreColegio = "jejeboi", hora = "algo fallo"):
         for turno in turnos:
             horarioDeDisponibilidad[dias.index(dia)].append([])
             for modulo in modulos[turnos.index(turno)]:
-                horarioDeDisponibilidad[dias.index(dia)][turnos.index(turno)].append(["Hueco"])
+                horarioDeDisponibilidad[dias.index(
+                    dia)][turnos.index(turno)].append(["Hueco"])
                 for profesor in docDiccionario["profesores"]:
                     if profesor["disponibilidad"][dia][turno.nombre][modulo]:
-                        horarioDeDisponibilidad[dias.index(dia)][turnos.index(turno)][modulos[turnos.index(turno)].index(modulo)].append(profesor.get("nombre") + " " + profesor.get("apellido"))
+                        horarioDeDisponibilidad[dias.index(dia)][turnos.index(turno)][modulos[turnos.index(
+                            turno)].index(modulo)].append(profesor.get("nombre") + " " + profesor.get("apellido"))
 
-    print(aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
+    print(aulas, profesores, dias, cursos, turnos,
+          materias, horarioDeDisponibilidad)
 
     try:
-        horarios, materiasProfesores, horariosAulas = algoritmo(aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
+        horarios, materiasProfesores, horariosAulas = algoritmo(
+            aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
         horariosDiccionario = {}
         for curso in range(len(cursos)):
             horariosDiccionario[cursos[curso]] = {}
             for dia in range(len(dias)):
                 horariosDiccionario[cursos[curso]][dias[dia]] = {}
                 for turno in range(len(turnos)):
-                    horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre] = {}
+                    horariosDiccionario[cursos[curso]
+                                        ][dias[dia]][turnos[turno].nombre] = {}
                     for modulo in range(turnos[turno].cantModulos):
-                        horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horarios[curso][dia][turno][modulo].nombre
-
+                        horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(
+                            modulo+1)] = horarios[curso][dia][turno][modulo].nombre
 
         horariosAulasDiccionario = {}
         for curso in range(len(cursos)):
@@ -169,29 +187,35 @@ def runAlgorithm(nombreColegio = "jejeboi", hora = "algo fallo"):
             for dia in range(len(dias)):
                 horariosAulasDiccionario[cursos[curso]][dias[dia]] = {}
                 for turno in range(len(turnos)):
-                    horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre] = {}
+                    horariosAulasDiccionario[cursos[curso]
+                                             ][dias[dia]][turnos[turno].nombre] = {}
                     for modulo in range(turnos[turno].cantModulos):
-                        horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(modulo+1)] = horariosAulas[curso][dia][turno][modulo]
-        
-        diccionarioColegio = {"horarios":horariosDiccionario, "materiasProfesores":materiasProfesores, "horariosAulas":horariosAulasDiccionario}
+                        horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(
+                            modulo+1)] = horariosAulas[curso][dia][turno][modulo]
+
+        diccionarioColegio = {"horarios": horariosDiccionario,
+                              "materiasProfesores": materiasProfesores, "horariosAulas": horariosAulasDiccionario}
         escribir(diccionarioColegio, hora, nombreColegio)
     except:
-       print("An exception occurred in your pp") 
-    
+        print("An exception occurred in your pp")
+
+
 def idGenerator():
     doc_ref = db.collection(u'school').document()
     return doc_ref.id
 
+
 def escribir(my_data, hora, nombreColegio):
     print(my_data)
     db.document(u"schools/"+nombreColegio+"/horarios/"+hora).set(my_data)
-    
+
     try:
         id = idGenerator()
         todo_ref.document(id).set(request.json)
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"An Error Occured: {e}"
+
 
 port = int(os.environ.get('PORT', 3304))
 if __name__ == '__main__':
