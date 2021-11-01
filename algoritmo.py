@@ -97,7 +97,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	def checkearPosicionValidaMinimosAulas(horarios, aula):
 		posiblesPosiciones = []
 		for curso in range(len(cursos)):
-			for dia in range(5):
+			for dia in range(len(dias)):
 				for turno in range(len(turnos)):
 					for modulo in range(turnos[turno].cantModulos):
 						if horariosAulas[curso][dia][turno][modulo] == aula:
