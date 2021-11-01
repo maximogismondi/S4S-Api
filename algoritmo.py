@@ -630,17 +630,19 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
 	def myFunc(aulaA):
 	    return cargaAulas[aulaA]
+	
 	cargaAlgoritmo["Inicializaciones"] = 1
 	for curso in range(len(cursos)):
 	    for materia in materias[curso]:
 	        materia.posiblesAulas.sort(key=myFunc)
-
+	
 	cargaAlgoritmo["Inicializaciones"] = 2
 
 	combinacionesTurnos = []
 	for turno in turnos:
 	    combinacionesTurnos.append([])
 	    combinaciones(turno, [])
+		
 	cargaAlgoritmo["Inicializaciones"] = 3
 	# Inicializo las posiciones de los horarios
 	horarios = []
@@ -652,12 +654,14 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	            horarios[i][j].append([])
 	            for _ in range(turnos[k].cantModulos):
 	                horarios[i][j][k].append(None)
+	
 	cargaAlgoritmo["Inicializaciones"] = 4
 	# Inicializo las posciciones de las materias
 	materiasProfesores = {}
 	for curso in range(len(cursos)):
 	        for materia in materias[curso]:
 	            materiasProfesores[materia.nombre] = None
+	
 	cargaAlgoritmo["Inicializaciones"] = 5
 	# Inicializo las posiciones de las aulas
 	horariosAulas = []
@@ -669,6 +673,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	            horariosAulas[i][j].append([])
 	            for _ in range(turnos[k].cantModulos):
 	                horariosAulas[i][j][k].append(None)
+					
 	cargaAlgoritmo["Inicializaciones"] = 6
 
 	for curso in range(len(cursos)):
@@ -681,6 +686,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	                            horarios[curso][dia][turno][modulo] = materia
 	                            horariosAulas[curso][dia][turno][modulo] = aulas[-1]
 	                            break
+	
 	cargaAlgoritmo["Inicializaciones"] = 7
 
 	for curso in range(len(cursos)):
@@ -689,9 +695,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	            break
 	        if len(materia.posibleProfesores) == 1:
 	            materiasProfesores[materia.nombre] = materia.posibleProfesores[0]
-	        # else:
-	        #     print(materia.nombre)
-
 	cargaAlgoritmo["Inicializaciones"] = 8
 
 	# Asigandor profesores
@@ -715,7 +718,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	                    materiasProfesores[materia.nombre] = profesorPosible
 	                else:
 	                    materiasProfesores[materia.nombre] = profesorPrincipal
-
+	
 	cargaAlgoritmo["Inicializaciones"] = 9
 	# ^^Inicializciones^^
 
@@ -740,7 +743,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	iteraciones = 0
 	while not todosPuestos(horarios) and iteraciones < 10:
 		cargaAlgoritmo["Greedy"] = iteraciones
-	    iteraciones += 1
+		iteraciones += 1
 	    for curso in range(len(cursos)):
 	        for dia in range(len(dias)):
 	            for turno in range(len(turnos)):
@@ -1183,8 +1186,8 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	     
 	iteracion = 0
 	while not checkeo() and iteracion != 50:
-	    print(iteracion)
-	    cargaAlgoritmo["Swap"] = iteracion
+		print(iteracion)
+		cargaAlgoritmo["Swap"] = iteracion
 	    horarios, horariosAulas = swap(horarios, horariosAulas)
 	    horarios, horariosAulas = swap2(horarios, horariosAulas)
 	    iteracion += 1
@@ -1296,8 +1299,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
 	
 	for i in range(10):
-	    print(i)
-	    cargaAlgoritmo["AgrupadorDeAulas"] = i
+		cargaAlgoritmo["AgrupadorDeAulas"] = i
 	    agrupadorPrincipalAulas(horariosAulas, horarios)
 	    agrupadorSecundarioAulas(horariosAulas, horarios)
 	    agrupadorTerciarioAulas(horariosAulas, horarios)
