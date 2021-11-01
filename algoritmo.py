@@ -1289,40 +1289,16 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	            else:
 	                horariosCopia = horariosAulas
 
-
-
-
-
-
-
-
-
-	
 	for i in range(10):
-		cargaAlgoritmo["AgrupadorDeAulas"] = i
-	    agrupadorPrincipalAulas(horariosAulas, horarios)
-	    agrupadorSecundarioAulas(horariosAulas, horarios)
-	    agrupadorTerciarioAulas(horariosAulas, horarios)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+     	cargaAlgoritmo["AgrupadorDeAulas"] = i
+		agrupadorPrincipalAulas(horariosAulas, horarios)
+  		agrupadorSecundarioAulas(horariosAulas, horarios)
+    	agrupadorTerciarioAulas(horariosAulas, horarios)
 
 
 	# ------------------------------------^Reagrupador^-----------------------------------------------------
 
-
 	# -----------------------------------------------------------^Swap^------------------------------------------------------------
+
 	checkeoSinReturn(True, True, True)
-    return horarios, materiasProfesores, horariosAulas
+ 	return horarios, materiasProfesores, horariosAulas

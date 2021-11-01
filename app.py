@@ -102,7 +102,7 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
     if doc.exists:
         print(f'Document data:')
     else:
-        return(u'No such document!')
+        return u'No such document!'
 
     # docDiccionario es un diccionario de la escuela
     docDiccionario = doc.to_dict()
