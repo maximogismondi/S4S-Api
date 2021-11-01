@@ -13,7 +13,6 @@ import os
 from algoritmo import algoritmo
 from flask import Flask,  request, jsonify
 from firebase_admin import credentials, firestore, initialize_app
-app = Flask(__name__)
 
 llaves = {
     "type": "service_account",
@@ -34,7 +33,7 @@ db = firestore.client()
 todo_ref = db.collection('todos')
 
 
-class Materia():
+class Materia:
     def __init__(self, nombre, curso, posibleProfesores, posiblesAulas, cantModulos, modulosContinuos):
         self.nombre = nombre + "-" + curso
         self.curso = curso
@@ -44,13 +43,13 @@ class Materia():
         self.modulosContinuos = modulosContinuos
 
 
-class Turno():
+class Turno:
     def __init__(self, nombre, cantModulos):
         self.nombre = nombre
         self.cantModulos = cantModulos
 
 
-class Posicion():
+class Posicion:
     def __init__(self, curso, dia, turno, modulo):
         self.curso = curso
         self.dia = dia
@@ -113,7 +112,6 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
     turnos = []
     materias = []
     horarios = []
-    disponibilidad = {}
 
     modulos = []
 
