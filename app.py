@@ -41,6 +41,7 @@ class Materia:
         self.posiblesAulas = posiblesAulas
         self.cantModulos = cantModulos
         self.modulosContinuos = modulosContinuos
+        self.modulosMinimos = 1
 
 
 class Turno:
@@ -157,7 +158,8 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
                 horarioDeDisponibilidad[-1][-1].append(["Hueco"])
                 for profesor in docDiccionario["profesores"]:
                     if profesor.get("disponibilidad")[dia][turnos[turno].nombre][modulos[turno][modulo]["inicio"]]:
-                        horarioDeDisponibilidad[-1][-1][-1].append(profesor.get("nombre") + " " + profesor.get("apellido"))
+                        horarioDeDisponibilidad[-1][-1][-1].append(
+                            profesor.get("nombre") + " " + profesor.get("apellido"))
 
     print("aulas", aulas,)
     print("turnos")
@@ -166,7 +168,8 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
     print("materias")
     for curso in range(len(cursos)):
         for materia in materias[curso]:
-            print(materia.nombre, materia.curso, materia.posibleProfesores, materia.posiblesAulas, materia.cantModulos, materia.modulosContinuos)
+            print(materia.nombre, materia.curso, materia.posibleProfesores,
+                  materia.posiblesAulas, materia.cantModulos, materia.modulosContinuos)
     print("cursos", cursos)
     print("dias", dias)
     print("profesores", profesores)
@@ -193,16 +196,16 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
             horariosAulasDiccionario[cursos[curso]][dias[dia]] = {}
             for turno in range(len(turnos)):
                 horariosAulasDiccionario[cursos[curso]
-                                            ][dias[dia]][turnos[turno].nombre] = {}
+                                         ][dias[dia]][turnos[turno].nombre] = {}
                 for modulo in range(len(turnos[turno].cantModulos)):
                     horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(
                         modulo+1)] = horariosAulas[curso][dia][turno][modulo]
 
     diccionarioColegio = {"horarios": horariosDiccionario,
-                            "materiasProfesores": materiasProfesores, "horariosAulas": horariosAulasDiccionario}
+                          "materiasProfesores": materiasProfesores, "horariosAulas": horariosAulasDiccionario}
     escribir(diccionarioColegio, hora, nombreColegio)
     # except:
-        # print("An exception occurred in your pp")
+    # print("An exception occurred in your pp")
 
 
 def idGenerator():

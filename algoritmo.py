@@ -9,6 +9,7 @@ class Materia():
 		self.posiblesAulas = posiblesAulas
 		self.cantModulos = cantModulos
 		self.modulosContinuos = modulosContinuos
+		self.modulosMinimos = 1
 
 
 class Turno():
