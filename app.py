@@ -171,38 +171,38 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
     print("dias", dias)
     print("profesores", profesores)
     print("horarioDeDisponibilidad", horarioDeDisponibilidad)
-    try:
-        horarios, materiasProfesores, horariosAulas = algoritmo(
-            aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
-        horariosDiccionario = {}
-        for curso in range(len(cursos)):
-            horariosDiccionario[cursos[curso]] = {}
-            for dia in range(len(dias)):
-                horariosDiccionario[cursos[curso]][dias[dia]] = {}
-                for turno in range(len(turnos)):
-                    horariosDiccionario[cursos[curso]
-                                        ][dias[dia]][turnos[turno].nombre] = {}
-                    for modulo in range(len(turnos[turno].cantModulos)):
-                        horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(
-                            modulo+1)] = horarios[curso][dia][turno][modulo].nombre
+    # try:
+    horarios, materiasProfesores, horariosAulas = algoritmo(
+        aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
+    horariosDiccionario = {}
+    for curso in range(len(cursos)):
+        horariosDiccionario[cursos[curso]] = {}
+        for dia in range(len(dias)):
+            horariosDiccionario[cursos[curso]][dias[dia]] = {}
+            for turno in range(len(turnos)):
+                horariosDiccionario[cursos[curso]
+                                    ][dias[dia]][turnos[turno].nombre] = {}
+                for modulo in range(len(turnos[turno].cantModulos)):
+                    horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(
+                        modulo+1)] = horarios[curso][dia][turno][modulo].nombre
 
-        horariosAulasDiccionario = {}
-        for curso in range(len(cursos)):
-            horariosAulasDiccionario[cursos[curso]] = {}
-            for dia in range(len(dias)):
-                horariosAulasDiccionario[cursos[curso]][dias[dia]] = {}
-                for turno in range(len(turnos)):
-                    horariosAulasDiccionario[cursos[curso]
-                                             ][dias[dia]][turnos[turno].nombre] = {}
-                    for modulo in range(len(turnos[turno].cantModulos)):
-                        horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(
-                            modulo+1)] = horariosAulas[curso][dia][turno][modulo]
+    horariosAulasDiccionario = {}
+    for curso in range(len(cursos)):
+        horariosAulasDiccionario[cursos[curso]] = {}
+        for dia in range(len(dias)):
+            horariosAulasDiccionario[cursos[curso]][dias[dia]] = {}
+            for turno in range(len(turnos)):
+                horariosAulasDiccionario[cursos[curso]
+                                            ][dias[dia]][turnos[turno].nombre] = {}
+                for modulo in range(len(turnos[turno].cantModulos)):
+                    horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(
+                        modulo+1)] = horariosAulas[curso][dia][turno][modulo]
 
-        diccionarioColegio = {"horarios": horariosDiccionario,
-                              "materiasProfesores": materiasProfesores, "horariosAulas": horariosAulasDiccionario}
-        escribir(diccionarioColegio, hora, nombreColegio)
-    except:
-        print("An exception occurred in your pp")
+    diccionarioColegio = {"horarios": horariosDiccionario,
+                            "materiasProfesores": materiasProfesores, "horariosAulas": horariosAulasDiccionario}
+    escribir(diccionarioColegio, hora, nombreColegio)
+    # except:
+        # print("An exception occurred in your pp")
 
 
 def idGenerator():
