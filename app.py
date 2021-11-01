@@ -125,7 +125,7 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
             cantidadModulosT = len(i.get("modulos"))
             modulos.append([])
             for j in i.get("modulos"):
-                modulos[turnos.index(i)].append(j)
+                modulos[-1].append(j)
             t = Turno(nombreT, cantidadModulosT)
             turnos.append(t)
     for curso in cursos:
@@ -151,15 +151,14 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
     horarioDeDisponibilidad = []
     for dia in dias:
         horarioDeDisponibilidad.append([])
-        for turno in turnos:
+        for turno in range(turnos):
             horarioDeDisponibilidad[dias.index(dia)].append([])
-            for modulo in modulos[turnos.index(turno)]:
+            for modulo in range(modulos[turno]):
                 horarioDeDisponibilidad[dias.index(
                     dia)][turnos.index(turno)].append(["Hueco"])
                 for profesor in docDiccionario["profesores"]:
-                    if profesor["disponibilidad"][dia][turno.nombre][modulo]:
-                        horarioDeDisponibilidad[dias.index(dia)][turnos.index(turno)][modulos[turnos.index(
-                            turno)].index(modulo)].append(profesor.get("nombre") + " " + profesor.get("apellido"))
+                    if profesor["disponibilidad"][dia][turno.nombre][modulos[turno][modulo]]:
+                        horarioDeDisponibilidad[dias.index(dia)][turno][modulo].append(profesor.get("nombre") + " " + profesor.get("apellido"))
 
     print(aulas, profesores, dias, cursos, turnos,
           materias, horarioDeDisponibilidad)
