@@ -176,7 +176,7 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
     print("horarioDeDisponibilidad", horarioDeDisponibilidad)
     try:
         horarios, materiasProfesores, horariosAulas = algoritmo(
-            aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad)
+            aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad, hora, nombreColegio)
         horariosDiccionario = {}
         for curso in range(len(cursos)):
             horariosDiccionario[cursos[curso]] = {}
@@ -223,6 +223,10 @@ def escribir(my_data, hora, nombreColegio):
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"An Error Occured: {e}"
+
+def progreso(hora,nombreColegio,progreso):
+    db.document(u"schools/"+nombreColegio+"/horarios/"+hora+"/progreso/").set(progreso)
+
 
 
 port = int(os.environ.get('PORT', 3304))
