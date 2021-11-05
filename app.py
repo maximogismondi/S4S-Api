@@ -76,11 +76,13 @@ def hilos():
     if str(os.environ.get('token')) == content['token']:
         nombreColegio = request.args.get('nombreColegio')
         hora = str(datetime.fromisoformat(
-            datetime.now().isoformat(timespec='minutes')))
+            datetime.now().isoformat(timespec='seconds')))
 
         def math_fun():
             # The sleep here is simply to make it clear that this happens in the background
             sleep(1)
+            my_data = {}
+            db.document(u"schools/"+nombreColegio+"/horarios/"+hora).set(my_data)
             runAlgorithm(nombreColegio, hora)
 
         def fun():
@@ -225,7 +227,7 @@ def escribir(my_data, hora, nombreColegio):
         return f"An Error Occured: {e}"
 
 def progreso(hora,nombreColegio,progreso):
-    db.document(u"schools/"+nombreColegio+"/horarios/"+hora+"/progreso/").set(progreso)
+    db.document(u"schools/"+nombreColegio+"/horarios/"+hora).update(progreso)
 
 
 

@@ -15,7 +15,7 @@ Flask-RESTful==0.3.9
 Flask-SQLAlchemy==2.5.1
 google-api-core==1.31.2
 google-api-python-client==2.21.0
-google-auth==2.1.0
+google-auth==1.25
 google-auth-httplib2==0.1.0
 google-cloud-core==2.0.0
 google-cloud-firestore==2.3.2
