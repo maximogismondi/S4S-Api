@@ -30,13 +30,13 @@ class Posicion():
 def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadProfesores, hora, nombreColegio):
 
 	cargaAlgoritmo = {}
-	cargaAlgoritmo["Funciones"] = 0
-	cargaAlgoritmo["AgrupadorDeAulas"] = 0
-	cargaAlgoritmo["Swap"] = 0
-	cargaAlgoritmo["Inicializaciones"] = 0
-	cargaAlgoritmo["Greedy"] = 0
-	cargaAlgoritmo["Greedy2"] = 0
-	cargaAlgoritmo["GreedyAulas"] = 0
+	cargaAlgoritmo["Funciones"] = 0 #5
+	cargaAlgoritmo["AgrupadorDeAulas"] = 0 #20
+	cargaAlgoritmo["Swap"] = 0 #30
+	cargaAlgoritmo["Inicializaciones"] = 0 #5
+	cargaAlgoritmo["Greedy"] = 0 #25
+	cargaAlgoritmo["Greedy2"] = 0 #10
+	cargaAlgoritmo["GreedyAulas"] = 0 # 5
 	progreso(hora, nombreColegio, cargaAlgoritmo)
 	# ordenar materias por modulosContinuos
 	for curso in range(len(cursos)):
@@ -617,7 +617,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 			combinacion[-1] -= 1
 			combinaciones(turno, copy.copy(combinacion))
 
-	cargaAlgoritmo["Funciones"] = 1
+	cargaAlgoritmo["Funciones"] = 5
 	progreso(hora, nombreColegio, cargaAlgoritmo)
 
 	# -------------------------------------------------------^Funciones^---------------------------------------------------------------------
@@ -733,6 +733,9 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	
 	cargaAlgoritmo["Inicializaciones"] = 9
 	progreso(hora, nombreColegio, cargaAlgoritmo)
+ 
+    cargaAlgoritmo["Inicializaciones"] = 10
+	progreso(hora, nombreColegio, cargaAlgoritmo)
 	# ^^Inicializciones^^
 
 	# for curso in range(len(cursos)):
@@ -755,7 +758,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	# Greedy principal
 	iteraciones = 0
 	while not todosPuestos(horarios) and iteraciones < 10:
-		cargaAlgoritmo["Greedy"] = iteraciones
+		cargaAlgoritmo["Greedy"] = iteraciones * 2
 		progreso(hora, nombreColegio, cargaAlgoritmo)
 		iteraciones += 1
 		for curso in range(len(cursos)):
@@ -894,10 +897,14 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 														horariosAulas[curso][dia][turno][modulo] = aulaPosible
 														break
 											break	
+    cargaAlgoritmo["Greedy"] = 25
+	progreso(hora, nombreColegio, cargaAlgoritmo)
 										   
 	
-	# Greedy secundario (Nomas de 10 iteraciones usualmente)
+	# Greedy secundario (No mas de 10 iteraciones usualmente)
 	while not todosPuestos(horarios):
+     	cargaAlgoritmo["Greedy2"] = cargaAlgoritmo["Greedy2"] + 1
+		progreso(hora, nombreColegio, cargaAlgoritmo)
 		for curso in range(len(cursos)):
 			for materia in materias[curso]:
 				if "Hueco" in materia.nombre:
@@ -926,7 +933,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 								horarios[curso][dia][turno][moduloi] = materia
 								modulosRestantes -= 1
 								break
-	cargaAlgoritmo["Greedy2"] = 1
+	cargaAlgoritmo["Greedy2"] = 10
 	progreso(hora, nombreColegio, cargaAlgoritmo)
 
 
@@ -945,7 +952,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 								break
 						if not puesto:
 							horariosAulas[curso][dia][turno][modulo] = horarios[curso][dia][turno][modulo].posiblesAulas[0]
-	cargaAlgoritmo["GreedyAulas"] = 1
+	cargaAlgoritmo["GreedyAulas"] = 5
 	progreso(hora, nombreColegio, cargaAlgoritmo)
 	# ---------------------------------------------^Greedy^--------------------------------------------------------------------
 
@@ -1201,7 +1208,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 		return horarios, horariosAulas
 		 
 	iteracion = 0
-	while not checkeo() and iteracion != 50:
+	while not checkeo() and iteracion != 30:
 		print(iteracion)
 		cargaAlgoritmo["Swap"] = iteracion
 		progreso(hora, nombreColegio, cargaAlgoritmo)
@@ -1209,7 +1216,8 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 		horarios, horariosAulas = swap2(horarios, horariosAulas)
 		iteracion += 1
 			
-
+    cargaAlgoritmo["Swap"] = 30
+	progreso(hora, nombreColegio, cargaAlgoritmo)
 	# for materiaAPoner in materias:
 	#	 if "Hueco" not in materiaAPoner.nombre:
 	#		 cuentaTotal = 0
@@ -1307,7 +1315,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 					horariosCopia = horariosAulas
 
 	for i in range(10):
-		cargaAlgoritmo["AgrupadorDeAulas"] = i
+		cargaAlgoritmo["AgrupadorDeAulas"] = i * 2
 		progreso(hora, nombreColegio, cargaAlgoritmo)
 		agrupadorPrincipalAulas(horariosAulas, horarios)
 		agrupadorSecundarioAulas(horariosAulas, horarios)
