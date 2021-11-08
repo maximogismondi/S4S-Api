@@ -1,6 +1,5 @@
 import copy
-import app
-
+from .app import progreso
 
 class Materia():
 	def __init__(self, nombre, curso, posibleProfesores, posiblesAulas, cantModulos, modulosContinuos):
@@ -30,13 +29,6 @@ class Posicion():
 def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadProfesores, hora, nombreColegio):
 
 	cargaAlgoritmo = {}
-
-
-
-
-
-
-
 	# ordenar materias por modulosContinuos
 	for curso in range(len(cursos)):
 		materias[curso] = sorted(
@@ -620,6 +612,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 			combinaciones(turno, copy.copy(combinacion))
 
 	cargaAlgoritmo[-1][1] = 5
+ 	print("An exception occurred in your pp")
 	progreso(hora, nombreColegio, cargaAlgoritmo)
 
 	# -------------------------------------------------------^Funciones^---------------------------------------------------------------------
