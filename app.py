@@ -69,7 +69,6 @@ def hello_world():
         return "A"
     return "Nao Nao voce no teneu token"
 
-
 @app.route('/algoritmo', methods=['POST'])
 def hilos():
     content = request.json
@@ -81,8 +80,9 @@ def hilos():
         def math_fun():
             # The sleep here is simply to make it clear that this happens in the background
             sleep(1)
-            my_data = {}
-            db.document(u"schools/"+nombreColegio+"/horarios/"+hora).set(my_data)
+            progreso = [] 
+            endo = {"progreso": progreso}
+            db.document(u"schools/"+nombreColegio+"/horarios/"+hora).set(endo)
             runAlgorithm(nombreColegio, hora)
 
         def fun():
@@ -169,45 +169,40 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
     #    print(turno.nombre, turno.cantModulos)
     #print("materias")
     #for curso in range(len(cursos)):
-    #    for materia in materias[curso]:
-    #        print(materia.nombre, materia.curso, materia.posibleProfesores,
-    #              materia.posiblesAulas, materia.cantModulos, materia.modulosContinuos)
-    #print("cursos", cursos)
-    #print("dias", dias)
-    #print("profesores", profesores)
-    #print("horarioDeDisponibilidad", horarioDeDisponibilidad)
-    try:
-        horarios, materiasProfesores, horariosAulas = algoritmo(
-            aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad, hora, nombreColegio)
-        horariosDiccionario = {}
-        for curso in range(len(cursos)):
-            horariosDiccionario[cursos[curso]] = {}
-            for dia in range(len(dias)):
-                horariosDiccionario[cursos[curso]][dias[dia]] = {}
-                for turno in range(len(turnos)):
-                    horariosDiccionario[cursos[curso]
+    #   for materia in materias[curso]:
+    #       print(materia.nombre, materia.curso, materia.posibleProfesores,
+    #             materia.posiblesAulas, materia.cantModulos, materia.modulosContinuos)
+    #prnt("cursos", cursos)
+    #prnt("dias", dias)
+    #prnt("profesores", profesores)
+    #prnt("horarioDeDisponibilidad", horarioDeDisponibilidad)
+    horarios, materiasProfesores, horariosAulas = algoritmo(
+        aulas, profesores, dias, cursos, turnos, materias, horarioDeDisponibilidad, hora, nombreColegio)
+    horariosDiccionario = {}
+    for curso in range(len(cursos)):
+        horariosDiccionario[cursos[curso]] = {}
+        for dia in range(len(dias)):
+            horariosDiccionario[cursos[curso]][dias[dia]] = {}
+            for turno in range(len(turnos)):
+                horariosDiccionario[cursos[curso]
+                                    ][dias[dia]][turnos[turno].nombre] = {}
+                for modulo in range(turnos[turno].cantModulos):
+                    horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(
+                        modulo+1)] = horarios[curso][dia][turno][modulo].nombre
+    horariosAulasDiccionario = {}
+    for curso in range(len(cursos)):
+        horariosAulasDiccionario[cursos[curso]] = {}
+        for dia in range(len(dias)):
+            horariosAulasDiccionario[cursos[curso]][dias[dia]] = {}
+            for turno in range(len(turnos)):
+                horariosAulasDiccionario[cursos[curso]
                                         ][dias[dia]][turnos[turno].nombre] = {}
-                    for modulo in range(turnos[turno].cantModulos):
-                        horariosDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(
-                            modulo+1)] = horarios[curso][dia][turno][modulo].nombre
-
-        horariosAulasDiccionario = {}
-        for curso in range(len(cursos)):
-            horariosAulasDiccionario[cursos[curso]] = {}
-            for dia in range(len(dias)):
-                horariosAulasDiccionario[cursos[curso]][dias[dia]] = {}
-                for turno in range(len(turnos)):
-                    horariosAulasDiccionario[cursos[curso]
-                                            ][dias[dia]][turnos[turno].nombre] = {}
-                    for modulo in range(turnos[turno].cantModulos):
-                        horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(
-                            modulo+1)] = horariosAulas[curso][dia][turno][modulo]
-
-        diccionarioColegio = {"horarios": horariosDiccionario,
-                            "materiasProfesores": materiasProfesores, "horariosAulas": horariosAulasDiccionario}
-        escribir(diccionarioColegio, hora, nombreColegio)
-    except:
-        print("An exception occurred in your pp")
+                for modulo in range(turnos[turno].cantModulos):
+                    horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][str(
+                        modulo+1)] = horariosAulas[curso][dia][turno][modulo]
+    diccionarioColegio = {"horarios": horariosDiccionario,
+                        "materiasProfesores": materiasProfesores, "horariosAulas": horariosAulasDiccionario}
+    escribir(diccionarioColegio, hora, nombreColegio)
 
 
 def idGenerator():
@@ -228,10 +223,11 @@ def escribir(my_data, hora, nombreColegio):
 def progreso(hora,nombreColegio,progreso):
     print("i dont feel okay ")
     print(progreso)
-    db.document(u"schools/"+nombreColegio+"/horarios/"+hora).put(progreso)
+    db.document(u"schools/"+nombreColegio+"/horarios/"+hora).update({"progreso":progreso})
 
-
-
+def decirA():
+    print("a")
+    
 port = int(os.environ.get('PORT', 3304))
 if __name__ == '__main__':
     app.run(threaded=True, host='0.0.0.0', port=port)
