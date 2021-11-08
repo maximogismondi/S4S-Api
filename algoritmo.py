@@ -399,7 +399,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 			for dia in range(len(dias)):
 				for turno in range(len(turnos)):
 					for modulo in range(turnos[turno].cantModulos):
-						materia = horarios[curso][dia][turno][modulo]
+						materia = horarios[curso][dia][turno][modulo]	
 						if "Hueco" in materia.nombre:
 							break
 						if horariosAulas[curso][dia][turno][modulo] not in materia.posiblesAulas and boolAulas:
@@ -612,7 +612,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 			combinaciones(turno, copy.copy(combinacion))
 
 	cargaAlgoritmo[-1][1] = 5
- 	print("An exception occurred in your pp")
+	print("An exception occurred in your pp")
 	progreso(hora, nombreColegio, cargaAlgoritmo)
 
 	# -------------------------------------------------------^Funciones^---------------------------------------------------------------------
