@@ -227,6 +227,7 @@ def escribir(my_data, hora, nombreColegio):
         return f"An Error Occured: {e}"
 
 def progreso(hora,nombreColegio,progreso):
+    print("i dont feel okay")
     db.document(u"schools/"+nombreColegio+"/horarios/"+hora).update(progreso)
 
 
