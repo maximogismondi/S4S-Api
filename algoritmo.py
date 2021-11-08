@@ -733,8 +733,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	
 	cargaAlgoritmo["Inicializaciones"] = 9
 	progreso(hora, nombreColegio, cargaAlgoritmo)
- 
-    cargaAlgoritmo["Inicializaciones"] = 10
+	cargaAlgoritmo["Inicializaciones"] = 10
 	progreso(hora, nombreColegio, cargaAlgoritmo)
 	# ^^Inicializciones^^
 
