@@ -30,19 +30,21 @@ class Posicion():
 def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadProfesores, hora, nombreColegio):
 
 	cargaAlgoritmo = {}
-	cargaAlgoritmo["Funciones"] = 0 #5
-	cargaAlgoritmo["AgrupadorDeAulas"] = 0 #20
-	cargaAlgoritmo["Swap"] = 0 #30
-	cargaAlgoritmo["Inicializaciones"] = 0 #5
-	cargaAlgoritmo["Greedy"] = 0 #25
-	cargaAlgoritmo["Greedy2"] = 0 #10
-	cargaAlgoritmo["GreedyAulas"] = 0 # 5
-	progreso(hora, nombreColegio, cargaAlgoritmo)
+	
+
+	
+	
+
+	
+	
 	# ordenar materias por modulosContinuos
 	for curso in range(len(cursos)):
 		materias[curso] = sorted(
 			materias[curso], key=lambda materia: materia.modulosContinuos)
-
+  
+  
+	cargaAlgoritmo["Funciones"] = 0 #5
+ 
 	def posiblesPosiciones(horarios, materia):
 		posiblesPosiciones = []
 		for curso in range(len(cursos)):
@@ -622,7 +624,10 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
 	# -------------------------------------------------------^Funciones^---------------------------------------------------------------------
 	# Incializaciones
-
+ 
+ 
+	cargaAlgoritmo["Inicializaciones"] = 0 #5
+ 
 	cargaAulas = {}
 	for aula in aulas:
 		cuentaAula = 0
@@ -753,7 +758,10 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	#				if cuentaMinProfesor == None or cuentaProfesor < cuentaMinProfesor:
 	#					cuentaMaxProfesor = cuentaProfesor
 	#					materiasProfesores[materia.nombre] = profesor
-
+ 
+ 
+	cargaAlgoritmo["Greedy"] = 0 #25
+ 
 	# Greedy principal
 	iteraciones = 0
 	while not todosPuestos(horarios) and iteraciones < 10:
@@ -901,6 +909,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 										   
 	
 	# Greedy secundario (No mas de 10 iteraciones usualmente)
+	cargaAlgoritmo["Greedy2"] = 0 #10
 	while not todosPuestos(horarios):
      	cargaAlgoritmo["Greedy2"] = cargaAlgoritmo["Greedy2"] + 1
 		progreso(hora, nombreColegio, cargaAlgoritmo)
@@ -936,7 +945,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	progreso(hora, nombreColegio, cargaAlgoritmo)
 
 
-	
+	cargaAlgoritmo["GreedyAulas"] = 0 # 5
 	# Poner Aulas faltantes
 	for curso in range(len(cursos)):
 		for dia in range(len(dias)):
@@ -1205,7 +1214,10 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 			break
 
 		return horarios, horariosAulas
-		 
+
+
+	cargaAlgoritmo["Swap"] = 0 #30
+ 
 	iteracion = 0
 	while not checkeo() and iteracion != 30:
 		print(iteracion)
@@ -1312,7 +1324,10 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 					horariosAulas = horariosCopia
 				else:
 					horariosCopia = horariosAulas
-
+     
+     
+	cargaAlgoritmo["AgrupadorDeAulas"] = 0 #20
+ 
 	for i in range(10):
 		cargaAlgoritmo["AgrupadorDeAulas"] = i * 2
 		progreso(hora, nombreColegio, cargaAlgoritmo)
