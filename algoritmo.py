@@ -639,15 +639,15 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 		for materia in materias[curso]:
 			materia.posiblesAulas.sort(key=myFunc)
 
-	cargaAlgoritmo[-1] = 2
-	app.progreso(hora, nombreColegio, cargaAlgoritmo)
+
+
 
 	combinacionesTurnos = []
 	for turno in turnos:
 		combinacionesTurnos.append([])
 		combinaciones(turno, [])
 
-	cargaAlgoritmo[-1] = 3
+	cargaAlgoritmo[-1] = 2
 	app.progreso(hora, nombreColegio, cargaAlgoritmo)
 	# Inicializo las posiciones de los horarios
 	horarios = []
@@ -660,15 +660,14 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 				for _ in range(turnos[k].cantModulos):
 					horarios[i][j][k].append(None)
 
-	cargaAlgoritmo[-1] = 4
-	app.progreso(hora, nombreColegio, cargaAlgoritmo)
+
 	# Inicializo las posciciones de las materias
 	materiasProfesores = {}
 	for curso in range(len(cursos)):
 			for materia in materias[curso]:
 				materiasProfesores[materia.nombre] = None
 
-	cargaAlgoritmo[-1] = 5
+	cargaAlgoritmo[-1] = 3
 	app.progreso(hora, nombreColegio, cargaAlgoritmo)
 	# Inicializo las posiciones de las aulas
 	horariosAulas = []
@@ -681,8 +680,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 				for _ in range(turnos[k].cantModulos):
 					horariosAulas[i][j][k].append(None)
 
-	cargaAlgoritmo[-1] = 6
-	app.progreso(hora, nombreColegio, cargaAlgoritmo)
 
 	for curso in range(len(cursos)):
 		for dia in range(len(dias)):
@@ -695,7 +692,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 								horariosAulas[curso][dia][turno][modulo] = aulas[-1]
 								break
 
-	cargaAlgoritmo[-1] = 7
+	cargaAlgoritmo[-1] = 4
 	app.progreso(hora, nombreColegio, cargaAlgoritmo)
 
 	for curso in range(len(cursos)):
@@ -704,8 +701,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 				break
 			if len(materia.posibleProfesores) == 1:
 				materiasProfesores[materia.nombre] = materia.posibleProfesores[0]
-	cargaAlgoritmo[-1] = 8
-	app.progreso(hora, nombreColegio, cargaAlgoritmo)
+
 
 	# Asigandor profesores
 	for curso in range(len(cursos)):
@@ -729,9 +725,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 					else:
 						materiasProfesores[materia.nombre] = profesorPrincipal
 
-	cargaAlgoritmo[-1] = 9
-	app.progreso(hora, nombreColegio, cargaAlgoritmo)
-	cargaAlgoritmo[-1] = 10
+	cargaAlgoritmo[-1] = 5
 	app.progreso(hora, nombreColegio, cargaAlgoritmo)
 	# ^^Inicializciones^^
 
@@ -1322,7 +1316,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	cargaAlgoritmo.append(0) #20
 
 	for i in range(10):
-		cargaAlgoritmo[-1] = i * 2
+		cargaAlgoritmo[-1] = (i+1) * 2
 		app.progreso(hora, nombreColegio, cargaAlgoritmo)
 		agrupadorPrincipalAulas(horariosAulas, horarios)
 		agrupadorSecundarioAulas(horariosAulas, horarios)
