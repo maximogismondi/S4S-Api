@@ -137,8 +137,13 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
             if i.get("curso") == curso:
                 nombreM = i.get("nombre")
                 cursoM = i.get("curso")
-
-                posiblesProfesoresM = i.get("profesoresCapacitados")
+                if i.get("profesoresSimultaneos") == True:
+                    posiblesProfesoresM = [i.get("profesoresCapacitados")[0]]
+                    for profesor in i.get("profesoresCapacitados")[1:]:
+                        posiblesProfesoresM[0] = posiblesProfesoresM + ";" + profesor
+                        
+                else:
+                    posiblesProfesoresM = i.get("profesoresCapacitados")
                 posiblesAulasM = i.get("aulasMateria")
 
                 cantidadDeModulosTotalM = i.get("cantidadDeModulosTotal")
