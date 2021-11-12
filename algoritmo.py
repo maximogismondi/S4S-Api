@@ -579,7 +579,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 			# Si el hueco dura varios turnos hacia adelante
 			for turno in range(turnoChequear, len(turnos)):
 				if turno == turnoChequear:
-					for modulo in range(moduloChequear, turnos[turnoChequear].cantModulos):
+					for modulo in range(moduloChequear, turnos[turno].cantModulos):
 						if "Hueco" not in horariosChequear[cursoChequear][diaChequear][turno][modulo].nombre :
 							break
 
@@ -588,7 +588,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 					break
 
 				else:
-					for modulo in range(turnos[turnoChequear].cantModulos):
+					for modulo in range(turnos[turno].cantModulos):
 						if "Hueco" not in horariosChequear[cursoChequear][diaChequear][turno][modulo].nombre :
 							break
 
