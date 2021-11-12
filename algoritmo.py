@@ -843,7 +843,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 						for cursoHueco in range(len(cursos)):
 							for diaHueco in range(len(dias)):
 								for turnoHueco in range(len(turnos)):
-									for moduloHueco in range(turnos[turno].cantModulos):
+									for moduloHueco in range(turnos[turnoHueco].cantModulos):
 										if "Hueco" in horarios[cursoHueco][diaHueco][turnoHueco][moduloHueco].nombre:
 											horariosAulas[cursoHueco][diaHueco][turnoHueco][moduloHueco] = "Hueco"
 						combinacion = copy.copy(combinacionAux)
