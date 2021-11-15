@@ -191,7 +191,7 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
                 horariosAulasDiccionario[cursos[curso]
                                         ][dias[dia]][turnos[turno].nombre] = {}
                 for modulo in range(turnos[turno].cantModulos):
-                    horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][turnos[turno]][modulos[turno][modulo]["inicio"]] = horariosAulas[curso][dia][turno][modulo]
+                    horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][turnos[turno].nombre][modulos[turno][modulo]["inicio"]] = horariosAulas[curso][dia][turno][modulo]
     diccionarioColegio = {"horarios": horariosDiccionario,
                         "materiasProfesores": materiasProfesores, "horariosAulas": horariosAulasDiccionario, "progreso": progreso}
     escribir(diccionarioColegio, hora, nombreColegio)
