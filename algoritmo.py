@@ -25,9 +25,7 @@ class Posicion():
 		self.modulo = modulo
 
 
-def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadProfesores, hora, nombreColegio):
-	app.decirA()
- 
+def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadProfesores, hora, nombreColegio): 
 	cargaAlgoritmo = []
 	cargaAlgoritmo.append(0) #5
 	#ordenar materias por modulosContinuos
