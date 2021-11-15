@@ -162,7 +162,7 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
         horarioDeDisponibilidad.append([])
         for turno in range(len(turnos)):
             horarioDeDisponibilidad[-1].append([])
-            for modulo in range(len(turnos[turno].cantModulos)):
+            for modulo in range(turnos[turno].cantModulos):
                 horarioDeDisponibilidad[-1][-1].append(["Hueco"])
                 for profesor in docDiccionario["profesores"]:
                     if profesor.get("disponibilidad")[dia][turnos[turno].nombre][modulos[turno][modulo]["inicio"]]:
