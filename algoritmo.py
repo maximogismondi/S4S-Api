@@ -716,9 +716,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 		for materia in materias[curso]:
 			materia.posiblesAulas.sort(key=myFunc)
 
-
-
-
 	combinacionesTurnos = []
 	for turno in turnos:
 		combinacionesTurnos.append([])
