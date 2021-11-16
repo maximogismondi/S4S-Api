@@ -1713,4 +1713,4 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
 	#-----------------------------------------------------------^Swap^------------------------------------------------------------
 	checkeoSinReturn(True, True, True)
-	return (horarios, materiasProfesores, horariosAulas, cargaAlgoritmoTrue, progreso)
+	return (horarios, materiasProfesores, horariosAulas, cargaAlgoritmo)
