@@ -117,7 +117,7 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
     materias = []
     horarios = []
     duracionModulos = docDiccionario.get("duracionModulo")
-    print(duracionModulos)
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 
 
     modulos = []
