@@ -6,8 +6,8 @@ class Materia():
 		self.curso = curso
 		self.posibleProfesores = posibleProfesores
 		self.posiblesAulas = posiblesAulas
-		self.cantModulos = cantModulos
-		self.modulosContinuos = modulosContinuos
+		self.cantModulos = cantModulo	
+		self.modulosContinuos = modulosContinuos	
 		self.modulosMinimos = 1
 
 
@@ -22,12 +22,12 @@ class Posicion():
 		self.curso = curso
 		self.dia = dia
 		self.turno = turno
-		self.modulo = modulo
+		self.modulo = modulo	
 
 
 def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadProfesores, hora, nombreColegio): 
-	cargaAlgoritmo = []
-	cargaAlgoritmo.append(0) #5
+	cargaAlgoritmo = []	
+	cargaAlgoritmo.append(0) #5		
 	#ordenar materias por modulosContinuos
 	for curso in range(len(cursos)):
 		materias[curso] = sorted(materias[curso], key=lambda materia: materia.modulosContinuos)
