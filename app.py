@@ -202,6 +202,7 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
         print("duracionModulos")
         escribir(diccionarioColegio, hora, nombreColegio)
     except:
+        db.document(u"schools/"+nombreColegio+"/horarios/"+hora).update({"progreso":"fallido"})        
         print("ñaoñaoñao")
 
 
