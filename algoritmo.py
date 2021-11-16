@@ -25,7 +25,8 @@ class Posicion():
 		self.modulo = modulo
 
 
-def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadProfesores, hora, nombreColegio): 
+def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadProfesores, hora, nombreColegio):
+		app.decirA()
 	cargaAlgoritmo = []
 	cargaAlgoritmo.append(0) #5
 	#ordenar materias por modulosContinuos
@@ -86,9 +87,12 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
 
 	def buscarTurnoDiferente(horarios, curso, dia, turno, bloque):
+		
 		huecosABuscar = len(bloque)
 		bloqueReturn = []
 		a = []
+		if huecosABuscar == 0:
+			return []
 		espacios = buscarEspaciosVacios(horarios, curso)
 		for diaEspacio in range(len(dias)):
 			if len(bloqueReturn) >= huecosABuscar:
@@ -377,9 +381,9 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 			for turnoChequear in range(len(turnos)):
 				for moduloChequear in range(turnos[turnoChequear].cantModulos):
 					if "Hueco" not in horarios[curso][dia][turnoChequear][moduloChequear].nombre:
-						if (turno - 1 == turnoChequear and bloqueHuecos[0] == 0 and moduloChequear == turnos[turnoChequear].cantModulos):
+						if (turno - 1 == turnoChequear and (bloqueHuecos[0] == 0 or "Hueco" not in horarios[curso][dia][turno][0].nombre) and moduloChequear == turnos[turnoChequear].cantModulos):
 							return True
-						if (turno + 1 == turnoChequear and bloqueHuecos[len(bloqueHuecos)-1] == turnos[turno].cantModulos - 1 and moduloChequear == 0):
+						if (turno + 1 == turnoChequear and (bloqueHuecos[len(bloqueHuecos)-1] or "Hueco" not in horarios[curso][dia][turno][len(bloqueHuecos)-1].nombre) == turnos[turno].cantModulos - 1 and moduloChequear == 0):
 							return True
 						return False
 		
@@ -577,7 +581,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 			# Si el hueco dura varios turnos hacia adelante
 			for turno in range(turnoChequear, len(turnos)):
 				if turno == turnoChequear:
-					for modulo in range(moduloChequear, turnos[turno].cantModulos):
+					for modulo in range(moduloChequear, turnos[turnoChequear].cantModulos):
 						if "Hueco" not in horariosChequear[cursoChequear][diaChequear][turno][modulo].nombre :
 							break
 
@@ -586,7 +590,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 					break
 
 				else:
-					for modulo in range(turnos[turno].cantModulos):
+					for modulo in range(turnos[turnoChequear].cantModulos):
 						if "Hueco" not in horariosChequear[cursoChequear][diaChequear][turno][modulo].nombre :
 							break
 
@@ -687,9 +691,8 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 			combinaciones(turno, copy.copy(combinacion))
 	
 	cargaAlgoritmo[-1] = 5
-	print("Aca llamo a progreso")
 	app.progreso(hora, nombreColegio, cargaAlgoritmo)
-	print("aca ya llame a progreso")
+
 
 	#-------------------------------------------------------^Funciones^---------------------------------------------------------------------
 	#Incializaciones
@@ -713,6 +716,9 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	for curso in range(len(cursos)):
 		for materia in materias[curso]:
 			materia.posiblesAulas.sort(key=myFunc)
+
+
+
 
 	combinacionesTurnos = []
 	for turno in turnos:
@@ -838,7 +844,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 						for cursoHueco in range(len(cursos)):
 							for diaHueco in range(len(dias)):
 								for turnoHueco in range(len(turnos)):
-									for moduloHueco in range(turnos[turnoHueco].cantModulos):
+									for moduloHueco in range(turnos[turno].cantModulos):
 										if "Hueco" in horarios[cursoHueco][diaHueco][turnoHueco][moduloHueco].nombre:
 											horariosAulas[cursoHueco][diaHueco][turnoHueco][moduloHueco] = "Hueco"
 						combinacion = copy.copy(combinacionAux)
@@ -1000,15 +1006,15 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 											break	
 										modulo = a
 			
-	cargaAlgoritmo[-1] = 25
-	app.progreso(hora, nombreColegio, cargaAlgoritmo)
+
 										
 	# for curso in range(len(cursos)):
 	#	 for dia in range(len(dias)):
 	#		 for turno in range(len(turnos)):
 	#			 for modulo in range(turnos[turno].cantModulos):
 	#				 if not huecoValido(horarios, curso, dia, turno, modulo):
-						
+	cargaAlgoritmo[-1] = 25
+	app.progreso(hora, nombreColegio, cargaAlgoritmo)				
 	iteraciones = 0
 	cargaAlgoritmo.append(0) #10
 	while not todosPuestos(horarios) and iteraciones < 5:
@@ -1092,8 +1098,8 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	while not todosPuestos(horarios):
 		for curso in range(len(cursos)):
 			for materia in materias[curso]:
-				if "Hueco" in materia.nombre:
-					continue
+				# if "Hueco" in materia.nombre:
+				#	 continue
 				if contarModulosTotal(horarios, materia) < materia.cantModulos:
 					curso = cursos.index(materia.curso)
 					for dia in range(len(dias)):
@@ -1148,8 +1154,117 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 							horariosAulas[curso][dia][turno][modulo] = horarios[curso][dia][turno][modulo].posiblesAulas[0]
 	cargaAlgoritmo[-1] = 5
 	app.progreso(hora, nombreColegio, cargaAlgoritmo)
+
+
+	for curso in range(len(cursos)):
+		for dia in range(len(dias)):
+			for turno in range(len(turnos)):
+				for modulo in range(turnos[turno].cantModulos):
+					materia = horarios[curso][dia][turno][modulo]
+					cuentaModulos = 0
+					modulosAMover = 0
+					bloqueAMover = []
+					for moduloi in range(turnos[turno].cantModulos):
+						if materia.nombre == horarios[curso][dia][turno][moduloi]:
+							cuentaModulos += 1
+					if cuentaModulos > materia.modulosContinuos:
+						modulosAMover = cuentaModulos - materia.modulosContinuos
+
+
+					for modulio in range(turnos[turno].cantModulos):
+						if len(bloqueAMover) == modulosAMover:
+							break
+						# Porque uso moduloi? Para que el primer turno siempre empiece desde el medio dia asi el segundo turno es utilizable por el swap
+						# Seria mas facil usar un range()? QuiS4S
+						if turno != 0:
+							moduloi = turnos[turno].cantModulos - 1 - modulio
+						else:
+							moduloi = modulio
+						if materia.nombre == horarios[curso][dia][turno][moduloi]:
+							bloqueAMover.append(moduloi)
+					bloquesCambiar = buscarTurnoDiferente(horarios, curso, dia, turno, bloqueAMover)
+					for i in range(len(bloqueAMover)):
+						horarios[curso][dia][turno][bloqueAMover[i]], horarios[curso][bloquesCambiar[i][1]][bloquesCambiar[i][2]][bloquesCambiar[i][3]] = horarios[curso][bloquesCambiar[i][1]][bloquesCambiar[i][2]][bloquesCambiar[i][3]], horarios[curso][dia][turno][bloqueAMover[i]]
+						horariosAulas[curso][dia][turno][bloqueAMover[i]], horariosAulas[curso][bloquesCambiar[i][1]][bloquesCambiar[i][2]][bloquesCambiar[i][3]] = horariosAulas[curso][bloquesCambiar[i][1]][bloquesCambiar[i][2]][bloquesCambiar[i][3]], horariosAulas[curso][dia][turno][bloqueAMover[i]]
+					
 	#---------------------------------------------^Greedy^--------------------------------------------------------------------
 
+	#Agrupador de aulas principal, utiliza el mismo metodo que el agrupador de materias
+	def agrupadorPrincipalAulas(horariosAulas, horarios):
+		for curso in range(len(cursos)):
+			for dia in range(len(dias)): 
+				for turno in range(len(turnos)):
+					for modulo in range(turnos[turno].cantModulos):
+						if horariosAulas[curso][dia][turno][modulo] != "Hueco":
+							cantidadModulos = 0
+							for cuentaModulo in range(turnos[turno].cantModulos):
+								if modulo - cuentaModulo > 0:
+									if horariosAulas[curso][dia][turno][modulo] == horariosAulas[curso][dia][turno][modulo - cuentaModulo]:
+										cantidadModulos = cantidadModulos + 1
+								if modulo + cuentaModulo < turnos[turno].cantModulos:
+									if horariosAulas[curso][dia][turno][modulo] == horariosAulas[curso][dia][turno][modulo + cuentaModulo]:
+										cantidadModulos = cantidadModulos + 1
+							cantidadModulos = cantidadModulos - 1 #Pasa que siempre me sobra 1 y no tenia ganas de reestructurar la logica
+							
+							posibles = checkearPosicionValidaMinimosAulas(horariosAulas, horariosAulas[curso][dia][turno][modulo])
+							for posiblePosicion in posibles:
+								if (aulaDisponible(horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]], horarios, dia, turno, modulo, cursos[curso]) and aulaDisponible(horariosAulas[curso][dia][turno][modulo], horarios, posiblePosicion[1], posiblePosicion[2], posiblePosicion[3], cursos[posiblePosicion[0]])):
+									if horariosAulas[curso][dia][turno][modulo] in horarios[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]].posiblesAulas and horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]] in horarios[curso][dia][turno][modulo].posiblesAulas:
+										horariosAulas[curso][dia][turno][modulo], horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]] = horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]], horariosAulas[curso][dia][turno][modulo]
+										break
+
+
+
+
+	#Agrupador secundario de aulas, este intenta poner aulas adyacentes a las que ya hay
+	def agrupadorSecundarioAulas(horariosAulas, horarios):
+		for aula in aulas:
+			posibles = checkearPosicionValidaMinimosAulas(horariosAulas, aula)
+			for posiblePosicion in posibles:
+				if (aulaDisponible(horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]], horarios, dia, turno, modulo, cursos[curso]) and aulaDisponible(aula, horarios, posiblePosicion[1], posiblePosicion[2], posiblePosicion[3], cursos[posiblePosicion[0]])):
+					if aula in horarios[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]].posiblesAulas:
+						horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]] = aula
+						break
+
+	#Tercer agrupador, este intenta hacer que en un bloque tengan todos la misma aula
+	def agrupadorTerciarioAulas(horariosAulas, horarios):
+		bloquesMaterias = encontrarBloquesMaterias(horarios)
+		horariosCopia = copy.deepcopy(horariosAulas)
+		for curso in range(len(cursos)):
+			for bloque in bloquesMaterias[curso]:
+				materia = horarios[  curso  ][  bloque[0][0]  ][  bloque[0][1]  ][  bloque[0][2]  ]
+				aulasUsadas = {}
+				horarioValido = True
+				for modulo in bloque:
+					try:
+						aulasUsadas[horariosAulas[curso][modulo[0]][modulo[1]][modulo[2]]] = aulasUsadas[horariosAulas[curso][modulo[0]][modulo[1]][modulo[2]]] + 1
+					except:
+						aulasUsadas[horariosAulas[curso][modulo[0]][modulo[1]][modulo[2]]] = 1
+				if not len(aulasUsadas.keys()) == 1:
+					for aula in aulasUsadas:
+						for modulo in bloque:
+							if aulaDisponible(aula, horarios, modulo[0], modulo[1], modulo[2], curso) and aula in horarios[curso][modulo[0]][modulo[1]][modulo[2]].posiblesAulas:
+								horariosCopia[curso][modulo[0]][modulo[1]][modulo[2]] = aula
+							else:
+								horarioValido = False
+
+						
+
+				if not horarioValido:
+					for aula in aulas:
+						for modulo in bloque:
+							if aulaDisponible(aula, horarios, modulo[0], modulo[1], modulo[2], curso) and aula in horarios[curso][modulo[0]][modulo[1]][modulo[2]].posiblesAulas:
+								horariosCopia[curso][modulo[0]][modulo[1]][modulo[2]] = aula
+							else:
+								horarioValido = False
+
+
+
+					
+				if horarioValido:
+					horariosAulas = horariosCopia
+				else:
+					horariosCopia = horariosAulas
 
 
 	def swap2(horarios, horariosAulas):
@@ -1163,8 +1278,8 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
 				materia = horarios[curso][dia][turno][bloqueA[0][2]]
 
-				if "Hueco" in materia.nombre:
-					continue
+				# if "Hueco" in materia.nombre:
+				#	 continue
 				a, b = bloqueValido(horarios, bloqueA, curso, horariosAulas)
 				if a:
 					continue
@@ -1280,7 +1395,133 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 					break
 		return horarios, horariosAulas		
 
+	def swap3(horarios, horariosAulas):
+		#La idea seria swappear por turnos, si no va ir probando con cada vez menos bloques hasta quedar solo con el problematico
+		bloques = encontrarBloquesMaterias(horarios)
+		for curso in range(len(cursos)):
+			for iBloque in range(len(bloques[curso])): 
+				bloqueA = bloques[curso][iBloque]
+				dia = bloqueA[0][0]
+				turno = bloqueA[0][1]
 
+				materia = horarios[curso][dia][turno][bloqueA[0][2]]
+
+				# if "Hueco" in materia.nombre:
+				#	 continue
+				a, b = bloqueValido(horarios, bloqueA, curso, horariosAulas)
+				if a:
+					continue
+				bloqueTurno = []
+				for bloqueParaTurno in bloques[curso]:
+					if bloqueParaTurno[0][0] == dia and bloqueParaTurno[0][1] == turno:
+						bloqueTurno.append(bloqueParaTurno)
+				for repeticion in range(len(bloqueTurno)):
+
+					if bloqueA not in bloqueTurno:
+						break
+					bloque = []
+					for bloqueAUnir in bloqueTurno:
+						bloque += bloqueAUnir
+					for bloque2 in bloques[curso]:	 
+					
+						if bloque2 == bloque:
+							continue
+						bloquesAux = [bloque2]
+
+						if len(bloque) < len(bloque2):
+							continue
+
+						elif len(bloque) > len(bloque2):
+							posibleConjunto, bloquesAux = conjuntoDeBloques(bloques, bloque2, len(bloque), curso)
+
+							if not posibleConjunto:
+								continue
+
+						horariosAux = copy.deepcopy(horarios)
+						horariosAulasAux = copy.deepcopy(horariosAulas)
+
+						bloqueSwappeado = []
+						for bloqueAux in bloquesAux:
+							bloqueSwappeado += bloqueAux
+
+						for moduloBloque in bloque:
+							for bloqueAux in bloquesAux:
+								for moduloBloqueAux in bloqueAux:
+									if bloque.index(moduloBloque) != bloqueSwappeado.index(moduloBloqueAux):
+										continue
+									horariosAux[curso][moduloBloque[0]][moduloBloque[1]][moduloBloque[2]],horariosAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]] = horariosAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]], horariosAux[curso][moduloBloque[0]][moduloBloque[1]][moduloBloque[2]] 
+									horariosAulasAux[curso][moduloBloque[0]][moduloBloque[1]][moduloBloque[2]],horariosAulasAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]] = horariosAulasAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]], horariosAulasAux[curso][moduloBloque[0]][moduloBloque[1]][moduloBloque[2]] 
+
+						# if turno = 0
+						# if turno2 = 0
+						# if turno = len(turnos) - 1
+						# if turno2 = len(turnos) - 1
+
+
+						a, b = bloqueValido(horariosAux, bloqueSwappeado, curso, horariosAulasAux)
+						if not a:
+
+							if b == "aula":
+								for moduloBloqueAux in bloqueSwappeado:
+									for aula in horariosAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]].posiblesAulas:
+										if aulaDisponible(aula, horarios, moduloBloqueAux[0], moduloBloqueAux[1], moduloBloqueAux[2], cursos[curso]):
+											horariosAulasAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]] = aula
+											break
+								a, b = bloqueValido(horariosAux, bloqueSwappeado, curso, horariosAulasAux)
+
+							# print(horarios[curso][bloque[0][0]][bloque[0][1]][bloque[0][2]].nombre)
+							# print(horarios[curso][bloque2[0][0]][bloque2[0][1]][bloque2[0][2]].nombre)
+							# for curso in range(len(cursos)):
+							#	 imprimir(curso)	 
+							# input()
+							if not a:
+								continue
+						
+						swapInvalido = False
+
+						for bloqueAux in bloquesAux:
+							# if "Hueco" in horariosAux[curso][bloqueAux[0][0]][bloqueAux[0][1]][bloqueAux[0][2]].nombre:
+							#	 continue
+
+							a, b = bloqueValido(horarios, bloqueAux, curso, horariosAulas)
+							if a:
+
+								valido, errorSwap = bloqueValido(horariosAux, bloque[bloqueSwappeado.index(bloqueAux[0]) : bloqueSwappeado.index(bloqueAux[-1]) + 1], curso, horariosAulasAux)
+								if not valido:
+									if errorSwap == "aula":
+										for moduloBloqueAux in bloqueAux:
+											for aula in horariosAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]].posiblesAulas:
+												if aulaDisponible(aula, horarios, moduloBloqueAux[0], moduloBloqueAux[1], moduloBloqueAux[2], cursos[curso]):
+													horariosAulasAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]] = aula
+													break
+										valido, b = bloqueValido(horariosAux, bloque[bloqueSwappeado.index(bloqueAux[0]) : bloqueSwappeado.index(bloqueAux[-1]) + 1], curso, horariosAulasAux)
+									if not valido:					 
+										swapInvalido = True
+							if not a:
+								valido, errorSwap = bloqueValido(horariosAux, bloque[bloqueSwappeado.index(bloqueAux[0]) : bloqueSwappeado.index(bloqueAux[-1]) + 1], curso, horariosAulasAux)
+								if not valido:
+									if errorSwap == "aula":
+										for moduloBloqueAux in bloqueAux:
+											for aula in horariosAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]].posiblesAulas:
+												if aulaDisponible(aula, horarios, moduloBloqueAux[0], moduloBloqueAux[1], moduloBloqueAux[2], cursos[curso]):
+													horariosAulasAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]] = aula
+													break
+						if swapInvalido:
+							continue
+
+						horarios = horariosAux
+						horariosAulas = horariosAulasAux
+
+			
+
+						
+						break
+					else:
+						bloqueTurno.pop(0)
+						continue
+					
+					break
+		return horarios, horariosAulas
 
 	def swap(horarios, horariosAulas):
 		bloques = encontrarBloquesMaterias(horarios)
@@ -1299,7 +1540,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 					continue
 
 				for bloque2 in bloques[curso]:	 
-					
+						
 					if bloque2 == bloque:
 						continue
 					bloquesAux = [bloque2]
@@ -1359,6 +1600,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 						# if "Hueco" in horariosAux[curso][bloqueAux[0][0]][bloqueAux[0][1]][bloqueAux[0][2]].nombre:
 						#	 continue
 
+
 						a, b = bloqueValido(horarios, bloqueAux, curso, horariosAulas)
 						if a:
 
@@ -1389,7 +1631,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 					horariosAulas = horariosAulasAux
 
 		
-
+		
 					
 					break
 				else:
@@ -1408,6 +1650,10 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 		print(iteracion)
 		horarios, horariosAulas = swap(horarios, horariosAulas)
 		horarios, horariosAulas = swap2(horarios, horariosAulas)
+		horarios, horariosAulas = swap3(horarios, horariosAulas)
+		agrupadorPrincipalAulas(horariosAulas, horarios)
+		agrupadorSecundarioAulas(horariosAulas, horarios)
+		agrupadorTerciarioAulas(horariosAulas, horarios)
 		iteracion += 1
 			
 	cargaAlgoritmo[-1] = 30
@@ -1431,82 +1677,6 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
 
 
-	#Agrupador de aulas principal, utiliza el mismo metodo que el agrupador de materias
-	def agrupadorPrincipalAulas(horariosAulas, horarios):
-		for curso in range(len(cursos)):
-			for dia in range(len(dias)): 
-				for turno in range(len(turnos)):
-					for modulo in range(turnos[turno].cantModulos):
-						if horariosAulas[curso][dia][turno][modulo] != "Hueco":
-							cantidadModulos = 0
-							for cuentaModulo in range(turnos[turno].cantModulos):
-								if modulo - cuentaModulo > 0:
-									if horariosAulas[curso][dia][turno][modulo] == horariosAulas[curso][dia][turno][modulo - cuentaModulo]:
-										cantidadModulos = cantidadModulos + 1
-								if modulo + cuentaModulo < turnos[turno].cantModulos:
-									if horariosAulas[curso][dia][turno][modulo] == horariosAulas[curso][dia][turno][modulo + cuentaModulo]:
-										cantidadModulos = cantidadModulos + 1
-							cantidadModulos = cantidadModulos - 1 #Pasa que siempre me sobra 1 y no tenia ganas de reestructurar la logica
-							
-							posibles = checkearPosicionValidaMinimosAulas(horariosAulas, horariosAulas[curso][dia][turno][modulo])
-							for posiblePosicion in posibles:
-								if (aulaDisponible(horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]], horarios, dia, turno, modulo, cursos[curso]) and aulaDisponible(horariosAulas[curso][dia][turno][modulo], horarios, posiblePosicion[1], posiblePosicion[2], posiblePosicion[3], cursos[posiblePosicion[0]])):
-									if horariosAulas[curso][dia][turno][modulo] in horarios[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]].posiblesAulas and horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]] in horarios[curso][dia][turno][modulo].posiblesAulas:
-										horariosAulas[curso][dia][turno][modulo], horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]] = horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]], horariosAulas[curso][dia][turno][modulo]
-										break
-
-
-
-
-	#Agrupador secundario de aulas, este intenta poner aulas adyacentes a las que ya hay
-	def agrupadorSecundarioAulas(horariosAulas, horarios):
-		for aula in aulas:
-			posibles = checkearPosicionValidaMinimosAulas(horariosAulas, aula)
-			for posiblePosicion in posibles:
-				if (aulaDisponible(horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]], horarios, dia, turno, modulo, cursos[curso]) and aulaDisponible(aula, horarios, posiblePosicion[1], posiblePosicion[2], posiblePosicion[3], cursos[posiblePosicion[0]])):
-					if aula in horarios[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]].posiblesAulas:
-						horariosAulas[posiblePosicion[0]][posiblePosicion[1]][posiblePosicion[2]][posiblePosicion[3]] = aula
-						break
-
-	#Tercer agrupador, este intenta hacer que en un bloque tengan todos la misma aula
-	def agrupadorTerciarioAulas(horariosAulas, horarios):
-		bloquesMaterias = encontrarBloquesMaterias(horarios)
-		horariosCopia = copy.deepcopy(horariosAulas)
-		for curso in range(len(cursos)):
-			for bloque in bloquesMaterias[curso]:
-				materia = horarios[  curso  ][  bloque[0][0]  ][  bloque[0][1]  ][  bloque[0][2]  ]
-				aulasUsadas = {}
-				horarioValido = True
-				for modulo in bloque:
-					try:
-						aulasUsadas[horariosAulas[curso][modulo[0]][modulo[1]][modulo[2]]] = aulasUsadas[horariosAulas[curso][modulo[0]][modulo[1]][modulo[2]]] + 1
-					except:
-						aulasUsadas[horariosAulas[curso][modulo[0]][modulo[1]][modulo[2]]] = 1
-				if not len(aulasUsadas.keys()) == 1:
-					for aula in aulasUsadas:
-						for modulo in bloque:
-							if aulaDisponible(aula, horarios, modulo[0], modulo[1], modulo[2], curso) and aula in horarios[curso][modulo[0]][modulo[1]][modulo[2]].posiblesAulas:
-								horariosCopia[curso][modulo[0]][modulo[1]][modulo[2]] = aula
-							else:
-								horarioValido = False
-
-						
-
-				if not horarioValido:
-					for aula in aulas:
-						for modulo in bloque:
-							if aulaDisponible(aula, horarios, modulo[0], modulo[1], modulo[2], curso) and aula in horarios[curso][modulo[0]][modulo[1]][modulo[2]].posiblesAulas:
-								horariosCopia[curso][modulo[0]][modulo[1]][modulo[2]] = aula
-							else:
-								horarioValido = False
-
-
-
-					
-				if horarioValido:
-					horariosAulas = horariosCopia
-				else:
-					horariosCopia = horariosAulas
 
 
 
@@ -1531,7 +1701,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
 
 
-	print(buscarTurnoDiferente(horarios, 5, 4, 1, [0,1,2,3]))
+
 
 
 
@@ -1547,4 +1717,3 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
 	#-----------------------------------------------------------^Swap^------------------------------------------------------------
 	checkeoSinReturn(True, True, True)
-	return horarios, materiasProfesores, horariosAulas, cargaAlgoritmo
