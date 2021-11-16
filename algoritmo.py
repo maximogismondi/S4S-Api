@@ -6,8 +6,8 @@ class Materia():
 		self.curso = curso
 		self.posibleProfesores = posibleProfesores
 		self.posiblesAulas = posiblesAulas
-		self.cantModulos = cantModulo	
-		self.modulosContinuos = modulosContinuos	
+		self.cantModulos = cantModulo
+		self.modulosContinuos = modulosContinuos
 		self.modulosMinimos = 1
 
 
@@ -22,12 +22,12 @@ class Posicion():
 		self.curso = curso
 		self.dia = dia
 		self.turno = turno
-		self.modulo = modulo	
+		self.modulo = modulo
 
 
 def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadProfesores, hora, nombreColegio): 
-	cargaAlgoritmo = []	
-	cargaAlgoritmo.append(0) #5		
+	cargaAlgoritmo = []
+	cargaAlgoritmo.append(0) #5
 	#ordenar materias por modulosContinuos
 	for curso in range(len(cursos)):
 		materias[curso] = sorted(materias[curso], key=lambda materia: materia.modulosContinuos)
@@ -1002,7 +1002,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 														horariosAulas[curso][dia][turno][modulo] = aulaPosible
 														break
 											modulo = a
-											break	
+											break
 										modulo = a
 			
 
@@ -1013,7 +1013,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 	#			 for modulo in range(turnos[turno].cantModulos):
 	#				 if not huecoValido(horarios, curso, dia, turno, modulo):
 	cargaAlgoritmo[-1] = 25
-	app.progreso(hora, nombreColegio, cargaAlgoritmo)				
+	app.progreso(hora, nombreColegio, cargaAlgoritmo)
 	iteraciones = 0
 	cargaAlgoritmo.append(0) #10
 	while not todosPuestos(horarios) and iteraciones < 5:
@@ -1293,7 +1293,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 					bloque = []
 					for bloqueAUnir in bloqueTurno:
 						bloque += bloqueAUnir
-					for bloque2 in bloques[curso]:	 
+					for bloque2 in bloques[curso]: 
 					
 						if bloque2 == bloque:
 							continue
@@ -1343,7 +1343,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 							# print(horarios[curso][bloque[0][0]][bloque[0][1]][bloque[0][2]].nombre)
 							# print(horarios[curso][bloque2[0][0]][bloque2[0][1]][bloque2[0][2]].nombre)
 							# for curso in range(len(cursos)):
-							#	 imprimir(curso)	 
+							#	 imprimir(curso)
 							# input()
 							if not a:
 								continue
@@ -1366,7 +1366,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 													horariosAulasAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]] = aula
 													break
 										valido, b = bloqueValido(horariosAux, bloque[bloqueSwappeado.index(bloqueAux[0]) : bloqueSwappeado.index(bloqueAux[-1]) + 1], curso, horariosAulasAux)
-									if not valido:					 
+									if not valido:
 										swapInvalido = True
 							if not a:
 								valido, errorSwap = bloqueValido(horariosAux, bloque[bloqueSwappeado.index(bloqueAux[0]) : bloqueSwappeado.index(bloqueAux[-1]) + 1], curso, horariosAulasAux)
@@ -1382,17 +1382,14 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 
 						horarios = horariosAux
 						horariosAulas = horariosAulasAux
-
-			
-
-						
+      
 						break
 					else:
 						bloqueTurno.pop(len(bloqueTurno) - 1)
 						continue
 					
 					break
-		return horarios, horariosAulas		
+		return horarios, horariosAulas
 
 	def swap3(horarios, horariosAulas):
 		#La idea seria swappear por turnos, si no va ir probando con cada vez menos bloques hasta quedar solo con el problematico
@@ -1421,7 +1418,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 					bloque = []
 					for bloqueAUnir in bloqueTurno:
 						bloque += bloqueAUnir
-					for bloque2 in bloques[curso]:	 
+					for bloque2 in bloques[curso]:
 					
 						if bloque2 == bloque:
 							continue
@@ -1471,7 +1468,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 							# print(horarios[curso][bloque[0][0]][bloque[0][1]][bloque[0][2]].nombre)
 							# print(horarios[curso][bloque2[0][0]][bloque2[0][1]][bloque2[0][2]].nombre)
 							# for curso in range(len(cursos)):
-							#	 imprimir(curso)	 
+							#	 imprimir(curso)
 							# input()
 							if not a:
 								continue
@@ -1494,7 +1491,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 													horariosAulasAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]] = aula
 													break
 										valido, b = bloqueValido(horariosAux, bloque[bloqueSwappeado.index(bloqueAux[0]) : bloqueSwappeado.index(bloqueAux[-1]) + 1], curso, horariosAulasAux)
-									if not valido:					 
+									if not valido:
 										swapInvalido = True
 							if not a:
 								valido, errorSwap = bloqueValido(horariosAux, bloque[bloqueSwappeado.index(bloqueAux[0]) : bloqueSwappeado.index(bloqueAux[-1]) + 1], curso, horariosAulasAux)
@@ -1538,7 +1535,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 				if a:
 					continue
 
-				for bloque2 in bloques[curso]:	 
+				for bloque2 in bloques[curso]:
 						
 					if bloque2 == bloque:
 						continue
@@ -1612,7 +1609,7 @@ def algoritmo(aulas, profesores, dias, cursos, turnos, materias, disponibilidadP
 												horariosAulasAux[curso][moduloBloqueAux[0]][moduloBloqueAux[1]][moduloBloqueAux[2]] = aula
 												break
 									valido, b = bloqueValido(horariosAux, bloque[bloqueSwappeado.index(bloqueAux[0]) : bloqueSwappeado.index(bloqueAux[-1]) + 1], curso, horariosAulasAux)
-								if not valido:					 
+								if not valido:
 									swapInvalido = True
 						if not a:
 							valido, errorSwap = bloqueValido(horariosAux, bloque[bloqueSwappeado.index(bloqueAux[0]) : bloqueSwappeado.index(bloqueAux[-1]) + 1], curso, horariosAulasAux)
