@@ -34,7 +34,7 @@ todo_ref = db.collection('todos')
 
 #a?
 class Materia:
-    def __init__(self, nombre, curso, posibleProfesores, posiblesAulas, cantModulos, modulosContinuos, mediodiaDisponible):
+    def __init__(self, nombre, curso, posibleProfesores, posiblesAulas, cantModulos, modulosContinuos):
         self.nombre = nombre + "-" + curso
         self.curso = curso
         self.posibleProfesores = posibleProfesores
@@ -42,7 +42,6 @@ class Materia:
         self.cantModulos = cantModulos
         self.modulosContinuos = modulosContinuos
         self.modulosMinimos = 1
-        self.mediodiaDisponible = mediodiaDisponible
 
 
 class Turno:
@@ -120,28 +119,14 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
     horarios = []
     duracionModulos = docDiccionario.get("duracionModulo")
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-    modulos = []
-    modulosEspeciales = []
-    a = 0
-    for turno in docDiccionario["turnos"]: 
-        print("voy por el turno", a)
-        i = 0
-        for modulo in turno.get("modulos"):
-            print("voy por el modulo", i)
 
-            if modulo.get("tipo") == "especial":
-                print("eureka")
-                modulosEspeciales.append([a,i])
-                i += 1
-            else:
-                i += 1
-        a += 1
-            
-    print(modulosEspeciales)
+
+    modulos = []
+
     [cursos.append(i.get("nombre")) for i in docDiccionario["cursos"]]
     [aulas.append(i.get("nombre")) for i in docDiccionario["aulas"]]
     [profesores.append(i.get("nombre") + " " + i.get("apellido"))
-    for i in docDiccionario["profesores"]]
+     for i in docDiccionario["profesores"]]
     for i in docDiccionario["turnos"]:
         if i.get("habilitado") == True:
             nombreT = str(i.get("nombre"))
@@ -156,7 +141,6 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
         for i in docDiccionario["materias"]:
             if i.get("curso") == curso:
                 nombreM = i.get("nombre")
-                mediodiaDisponibleM = i.get("materiaEspecial")
                 cursoM = i.get("curso")
                 if i.get("profesoresSimultaneos") == True:
                     posiblesProfesoresM = [i.get("profesoresCapacitados")[0]]
@@ -172,12 +156,10 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
                     "cantidadMaximaDeModulosPorDia")
 
                 a = Materia(nombreM, cursoM, posiblesProfesoresM, posiblesAulasM,
-                            cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM, mediodiaDisponibleM)
+                            cantidadDeModulosTotalM, cantidadMaximaDeModulosPorDiaM)
                 materias[-1].append(a)
 
-        materias[-1].append(Materia("ModuloShiny", curso, [], [], 0, 99, True))
-
-        materias[-1].append(Materia("Hueco", curso, [], [], 0, 99, True))
+        materias[-1].append(Materia("Hueco", curso, [], [], 0, 99))
 
     horarioDeDisponibilidad = []
     for dia in dias:
@@ -214,7 +196,7 @@ def runAlgorithm(nombreColegio="jejeboi", hora="algo fallo"):
                     horariosAulasDiccionario[cursos[curso]
                                             ][dias[dia]][turnos[turno].nombre] = {}
                     for modulo in range(turnos[turno].cantModulos):
-                        horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][modulos[turno][modulo]["inicio"]] = horariosAulas[curso][dia][turno][modulo]
+                            horariosAulasDiccionario[cursos[curso]][dias[dia]][turnos[turno].nombre][modulos[turno][modulo]["inicio"]] = horariosAulas[curso][dia][turno][modulo]
         diccionarioColegio = {"horarios": horariosDiccionario,
                             "materiasProfesores": materiasProfesores, "horariosAulas": horariosAulasDiccionario, "progreso": progreso, "duracionModulos": duracionModulos}
         print("duracionModulos")
