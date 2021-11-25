@@ -68,7 +68,8 @@ def hello_world():
     if str(os.environ.get('token')) == content['token']:
         return "A"
     return "Nao Nao voce no teneu token"
-
+ #a
+ 
 @app.route('/algoritmo', methods=['POST'])
 def hilos():
     content = request.json
